@@ -1,28 +1,17 @@
 # Strom-Kalkulator
 
-"Strom-Kalkulator" is a Norwegian term that translates to 
-"electricity cost calculator" or "electricity price calculator" in 
-English. The term "strømpris" refers to "electricity price" in 
-Norwegian.
+I løpet av 2022 opplevde Norge rekordhøye strømpriser, noe som påvirket både
+privatpersoner og bedrifter. På grunn av denne pågående situasjonen og den økende
+bekymringen rundt energikostnader, har vi valgt å fokusere på Case 2: Strømpris-
+kalkulator.
 
+Vi mener at dette caset er spesielt relevant og aktuelt på grunn av den intense
+diskusjonen og debatten som har pågått rundt strømprisene i det siste. Flere fakto-
+rer, som værforhold, økende etterspørsel etter strøm og endringer i energimarkedet,
+har bidratt til denne utfordrende situasjonen.
 
-It appears that "Strom-Kalkulator" is related to an IN2000
-project assignment, which suggests that it may be a project or 
-assignment related to a course or program of study. While the specifics 
-of the project are unclear, it likely involves creating a tool or 
-program used to calculate electricity costs or prices in Norway.
-
-
-Developing tools like "Strom-Kalkulator" can have 
-real-world benefits, helping consumers and businesses make informed 
-decisions about their energy usage and costs. By providing easy access 
-to information about electricity prices and costs, such tools can help 
-promote energy efficiency and sustainability.
-
-
-Overall, "Strom-Kalkulator" is an example of how 
-technology can be used to solve real-world problems and empower 
-individuals and communities. With continued innovation and development, 
-such tools have the potential to drive positive change and make a 
-meaningful impact on our world.
-
+Ved å utvikle en strømpriskalkulator-app ønsker vi å hjelpe forbrukerne med å få
+en bedre forståelse av hvordan strømprisene påvirker deres daglige liv og økonomi. En
+slik app vil kunne gi dem innsikt i forbruksmønstrene sine og bidra til å identifisere
+muligheter for energibesparelser. Dette kan potensielt føre til mer bærekraftige valg
+og reduserte strømutgifter for både enkeltpersoner og bedrifter.
