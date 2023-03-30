@@ -5,13 +5,20 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.produceState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.stromkalkulator.data.repositories.ElectricityPrice
 
 @Composable
 fun HomeScreen(paddingValue: PaddingValues) {
+    val electricityPrice = ElectricityPrice()
+    val current = produceState<String>(
+        initialValue = "hei",
+        producer = { value = electricityPrice.getCurrent() })
+
     Column (
         modifier = Modifier
             .fillMaxSize()
@@ -28,7 +35,7 @@ fun HomeScreen(paddingValue: PaddingValues) {
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center,
             ) {
-                Text(text = "Current Price")
+                Text(text = "${current.value} kr/kwh")
             }
         }
 

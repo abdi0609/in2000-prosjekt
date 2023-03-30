@@ -85,6 +85,21 @@ class ElectricityPrice {
              Day(emptyList()) }
     }
 
+    //converts date-string to HOUR
+    private fun getHourFromDate(time: String): Int = time.split("T")[1].subSequence(0,2).toString().toInt()
+    suspend fun getCurrent(): String {
+        val thisDay = getToday()
+        val calendar = Calendar.getInstance()
+        val currentTime = calendar.get(Calendar.HOUR_OF_DAY)
+
+        thisDay.hours.forEach {
+            val hourStart = getHourFromDate(it.time_start)
+            // if this hour
+            if (hourStart == currentTime) return it.NOK_per_kWh
+        }
+        return "Not found"
+    }
+
     suspend fun getWeek(): Week {
         val calendar = Calendar.getInstance()
         var dayInt = (calendar.get(Calendar.DAY_OF_MONTH) + 1)
