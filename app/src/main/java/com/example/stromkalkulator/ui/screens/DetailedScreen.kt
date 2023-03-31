@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.produceState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.stromkalkulator.data.models.Day
+import com.example.stromkalkulator.data.models.electricity.Day
 import com.example.stromkalkulator.data.repositories.ElectricityPrice
 
 

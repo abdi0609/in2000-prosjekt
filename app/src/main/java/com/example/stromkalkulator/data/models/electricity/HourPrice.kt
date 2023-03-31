@@ -1,4 +1,4 @@
-package com.example.stromkalkulator.data.models
+package com.example.stromkalkulator.data.models.electricity
 
 import kotlinx.serialization.Serializable
 
