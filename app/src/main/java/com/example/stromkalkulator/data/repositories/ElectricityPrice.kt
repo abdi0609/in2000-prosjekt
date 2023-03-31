@@ -1,7 +1,5 @@
 package com.example.stromkalkulator.data.repositories
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import com.example.stromkalkulator.data.models.Day
 import com.example.stromkalkulator.data.models.HourPrice
 import com.example.stromkalkulator.data.models.Week
@@ -25,7 +23,6 @@ class ElectricityPrice {
     )
     private val client = HttpClient(CIO) { install(ContentNegotiation) { json() } }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     suspend fun getTomorrow(): Day {
         return try {
             val calendar = Calendar.getInstance()
