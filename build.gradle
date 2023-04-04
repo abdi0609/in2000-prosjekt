@@ -1,4 +1,8 @@
 buildscript {
+    dependencies {
+        // SECRETS
+        classpath "com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin:2.0.1"
+    }
     ext {
         compose_version = '1.4.0'
     }
@@ -12,4 +16,5 @@ plugins {
     id 'org.jetbrains.kotlin.plugin.serialization' version '1.8.0'
     id 'org.jetbrains.kotlin.jvm' version '1.8.0'
     id "org.jetbrains.kotlin.kapt" version '1.8.0'
+
 }

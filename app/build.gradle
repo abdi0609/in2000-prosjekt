@@ -4,6 +4,8 @@ plugins {
 
     id 'kotlinx-serialization'
     id 'org.jetbrains.kotlin.kapt'
+
+    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
 }
 
 android {
@@ -71,8 +73,17 @@ dependencies {
 
     //KTOR
     def ktor_version = "2.2.3"
-    implementation("io.ktor:ktor-client-cio:$ktor_version")
-    implementation("io.ktor:ktor-client-content-negotiation:$ktor_version")
-    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
+    implementation "io.ktor:ktor-client-cio:$ktor_version"
+    implementation "io.ktor:ktor-client-content-negotiation:$ktor_version"
+    implementation "io.ktor:ktor-serialization-kotlinx-json:$ktor_version"
+
+    //Temp
+    implementation "io.ktor:ktor-client-android:$ktor_version"
+    implementation "io.ktor:ktor-serialization-gson:$ktor_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1"
+    implementation "androidx.compose.runtime:runtime-livedata:$compose_version"
+    implementation "io.coil-kt:coil-compose:2.2.2"
+    implementation 'com.google.code.gson:gson:2.8.8'
+
 
 }
