@@ -8,14 +8,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.produceState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.stromkalkulator.data.models.electricity.Day
 import com.example.stromkalkulator.data.repositories.ElectricityPrice
+import com.example.stromkalkulator.viewmodels.DetailedViewModel
 
 
 @Composable
 fun DetailedView(innerPadding: PaddingValues) {
+    val viewModel: DetailedViewModel = viewModel()
 
-    val electricityPrice = ElectricityPrice()
+    val electricityPrice = ElectricityPrice(viewModel.httpClient)
     val hours = produceState(
         initialValue = Day(emptyList()),
         producer = { value = electricityPrice.getTomorrow() })

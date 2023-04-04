@@ -14,15 +14,13 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 
 
-class ElectricityPrice {
+class ElectricityPrice (private val client: HttpClient) {
     private val daysInMonth = hashMapOf(
         "01" to 31, "02" to 28, "03" to 31,
         "04" to 30, "05" to 31, "06" to 30,
         "07" to 31, "08" to 31, "09" to 30,
         "10" to 31, "11" to 30, "12" to 31
     )
-    private val client = HttpClient(CIO) { install(ContentNegotiation) { json() } }
-
     suspend fun getTomorrow(): Day {
         return try {
             val calendar = Calendar.getInstance()
@@ -30,6 +28,7 @@ class ElectricityPrice {
             var dayString = dayInt.toString()
             var monthInt = (calendar.get(Calendar.MONTH) + 1)
             var monthString = monthInt.toString()
+            if (monthString.length == 1) { monthString = "0$monthString" }
             var yearInt = calendar.get(Calendar.YEAR)
             var yearString = yearInt.toString()
             val currentDateTime = LocalDateTime.now()

@@ -10,9 +10,7 @@ import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
 import io.ktor.serialization.kotlinx.json.*
 
-class GridTariff {
-    private val client = HttpClient(CIO) { install(ContentNegotiation) { json() } }
-
+class GridTariff (private val client: HttpClient) {
 
     suspend fun getAvgCounty(fromDate: String, toDate: String): List<County> {
         return try {

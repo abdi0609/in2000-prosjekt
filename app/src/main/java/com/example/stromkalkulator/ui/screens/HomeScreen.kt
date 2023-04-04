@@ -13,15 +13,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.stromkalkulator.data.repositories.ElectricityPrice
 import com.example.stromkalkulator.ui.theme.*
+import com.example.stromkalkulator.viewmodels.HomeViewModel
 import java.math.RoundingMode
 import java.text.DecimalFormat
 
 @Composable
 fun HomeScreen(paddingValue: PaddingValues) {
-    val electricityPrice = ElectricityPrice()
-    val current = produceState<String>(
+    val viewModel: HomeViewModel = viewModel()
+    val electricityPrice = ElectricityPrice(viewModel.httpClient)
+    val currentPrice = produceState<String>(
         initialValue = "0.0",
         producer = { value = electricityPrice.getCurrent() })
 
@@ -33,7 +36,18 @@ fun HomeScreen(paddingValue: PaddingValues) {
         verticalArrangement = Arrangement.spacedBy(30.dp)
     ) {
         Spacer(modifier = Modifier.size(40.dp))
-        CurrentPriceBubble(priceString = current.value)
+        CurrentPriceBubble(priceString = currentPrice.value)
+        Card (
+            modifier = Modifier.size(250.dp, 250.dp),
+            shape = CircleShape,
+        ) {
+            Box (
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center,
+            ) {
+                Text(text = "${currentPrice.value} kr/kwh")
+            }
+        }
 
         Card(modifier = Modifier.size(300.dp, 300.dp)) {
             Box(
