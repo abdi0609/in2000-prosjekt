@@ -15,3 +15,20 @@ en bedre forståelse av hvordan strømprisene påvirker deres daglige liv og øk
 slik app vil kunne gi dem innsikt i forbruksmønstrene sine og bidra til å identifisere
 muligheter for energibesparelser. Dette kan potensielt føre til mer bærekraftige valg
 og reduserte strømutgifter for både enkeltpersoner og bedrifter.
+
+### API-nøkkel
+For å få hentet data fra MET-apiene trenger man en API-nøkkel.
+Det er god standard å ha denne lokalt på egen maskin, og ikke
+i en fil som pushes til github. For at appen skal kjøre, legg
+til api-nøkkelen i local.properties slik:
+
+```properties
+apiKey=DIN_API_NØKKEL
+```
+
+Da burde den ligge i BuildConfig når du har bygget appen, 
+og du kan hente den ut hvor som helst
+i kotlin-koden ved å skirve `BuildConfig.apiKey`
+
+**ADVARSEL: DETTE GJEMMER IKKE API-NØKKELEN I APK-BUILDS AV 
+PROSJEKTET. DETTE ER BARE EN LØSNING FOR Å SLIPPE Å LEGGE TIL NØKKELEN I GIT.**

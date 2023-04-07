@@ -64,20 +64,16 @@ dependencies {
     implementation 'androidx.navigation:navigation-compose:2.5.3'
     implementation 'androidx.compose.material3:material3:1.1.0-beta01'
     testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
-    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
-    androidTestImplementation 'org.junit.jupiter:junit-jupiter'
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
 
-    //KTOR
+    // KTOR
     def ktor_version = "2.2.3"
     implementation "io.ktor:ktor-client-cio:$ktor_version"
     implementation "io.ktor:ktor-client-content-negotiation:$ktor_version"
     implementation "io.ktor:ktor-serialization-kotlinx-json:$ktor_version"
 
-    //Temp
+    // Temp
     implementation "io.ktor:ktor-client-android:$ktor_version"
     implementation "io.ktor:ktor-serialization-gson:$ktor_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1"
@@ -85,5 +81,14 @@ dependencies {
     implementation "io.coil-kt:coil-compose:2.2.2"
     implementation 'com.google.code.gson:gson:2.8.8'
 
+    // Android Test
+    androidTestImplementation "io.ktor:ktor-client-mock:$ktor_version"
+    androidTestImplementation "io.mockk:mockk-android:1.12.0"
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
 
+    // Test
+    testImplementation "io.ktor:ktor-client-mock:$ktor_version"
+    testImplementation "io.mockk:mockk:1.12.0"
 }

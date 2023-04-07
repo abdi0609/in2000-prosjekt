@@ -10,24 +10,14 @@ import java.util.Calendar
 
 
 class ElectricityPrice (private val client: HttpClient) {
-    // Denne er visst ikke brukt????
-    /*
-    private val daysInMonth = hashMapOf(
-        "01" to 31, "02" to 28, "03" to 31,
-        "04" to 30, "05" to 31, "06" to 30,
-        "07" to 31, "08" to 31, "09" to 30,
-        "10" to 31, "11" to 30, "12" to 31
-    )
-    */
-    suspend fun getTomorrow(): Day {
-        return try {
-            val calendar = Calendar.getInstance()
-            calendar.add(Calendar.MONTH, 1)
-            if (calendar.get(Calendar.HOUR_OF_DAY) < 14) { return Day(emptyList()) }
+    suspend fun getTomorrow(calendar: Calendar = Calendar.getInstance()): Day {
 
-            calendar.add(Calendar.DAY_OF_YEAR, 1)
-            // Denne er visst aldri brukt heller
-            //val tomorrow = calendar.time
+        if (calendar.get(Calendar.HOUR_OF_DAY) < 14) { return Day(emptyList()) }
+
+        calendar.add(Calendar.MONTH, 1)
+        calendar.add(Calendar.DAY_OF_YEAR, 1)
+
+        return try {
 
             var dayString = calendar.get(Calendar.DAY_OF_MONTH).toString()
             var monthString = calendar.get(Calendar.MONTH).toString()
@@ -46,9 +36,8 @@ class ElectricityPrice (private val client: HttpClient) {
         }
     }
 
-    suspend fun getToday(): Day {
+    suspend fun getToday(calendar: Calendar = Calendar.getInstance()): Day {
         return try {
-            val calendar = Calendar.getInstance()
             val year = calendar.get(Calendar.YEAR).toString()
 
             //get(month) gir dagen før. Vet ikke hvorfor
@@ -66,10 +55,11 @@ class ElectricityPrice (private val client: HttpClient) {
     }
 
     //converts date-string to HOUR
-    private fun getHourFromDate(time: String): Int = time.split("T")[1].subSequence(0,2).toString().toInt()
-    suspend fun getCurrent(): String {
+    private fun getHourFromDate(time: String):
+            Int = time.split("T")[1].subSequence(0,2).toString().toInt()
+
+    suspend fun getCurrent(calendar: Calendar = Calendar.getInstance()): String {
         val thisDay = getToday()
-        val calendar = Calendar.getInstance()
         val currentTime = calendar.get(Calendar.HOUR_OF_DAY)
 
         thisDay.hours.forEach {
@@ -80,9 +70,8 @@ class ElectricityPrice (private val client: HttpClient) {
         return "Not found"
     }
 
-    suspend fun getWeek(): Week {
+    suspend fun getWeek(calendar: Calendar = Calendar.getInstance()): Week {
         val urlList = mutableListOf<String>()
-        val calendar = Calendar.getInstance()
         for (i in 0..6) {
             var month = (calendar.get(Calendar.MONTH) + 1).toString()
             var day = calendar.get(Calendar.DAY_OF_MONTH).toString()
@@ -97,8 +86,8 @@ class ElectricityPrice (private val client: HttpClient) {
 
         val hourPriceList = emptyList<Day>().toMutableList()
         for (url in urlList) {
-            val day: Day = client.get(url).body()
-            hourPriceList.add(day)
+            val dayList: List<HourPrice> = client.get(url).body()
+            hourPriceList.add(Day(dayList))
         }
 
         return Week(hourPriceList)
