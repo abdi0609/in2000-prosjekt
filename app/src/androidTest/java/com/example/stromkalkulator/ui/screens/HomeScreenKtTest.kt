@@ -4,15 +4,14 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.example.stromkalkulator.data.repositories.ElectricityPrice
-import com.example.stromkalkulator.viewmodels.MainUiState
-import com.example.stromkalkulator.viewmodels.MainViewModel
+import com.example.stromkalkulator.viewmodels.HomeViewModel
+import com.example.stromkalkulator.viewmodels.SharedUiState
+import com.example.stromkalkulator.viewmodels.SharedViewModel
 import io.ktor.client.*
 import io.ktor.client.engine.mock.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
-import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
@@ -36,8 +35,20 @@ internal class HomeScreenKtTest {
     fun homeScreen() = runTest() {
         // Mock required dependencies
         val mockPaddingValues = PaddingValues()
-        val mockMainViewModel = mockk<MainViewModel>().apply {
-            every { mainStateFlow } returns MutableStateFlow(MainUiState())
+        val mockSharedViewModel = mockk<SharedViewModel>().apply {
+            every { sharedStateFlow } returns MutableStateFlow(
+                SharedUiState(
+                    temperatures = listOf(),
+                    prices = listOf(),
+                    currentPrice = "0.5"
+                )
+            )
+        }
+        val mockHomeViewModel = mockk<HomeViewModel>().apply {
+            every { getRegion() } returns mockSharedViewModel.sharedStateFlow.value.region
+            every { getTemperatures() } returns mockSharedViewModel.sharedStateFlow.value.temperatures
+            every { getPrices() } returns mockSharedViewModel.sharedStateFlow.value.prices
+            every { getCurrentPrice() } returns mockSharedViewModel.sharedStateFlow
         }
 
         mockkStatic(Calendar::class)
@@ -50,14 +61,9 @@ internal class HomeScreenKtTest {
         }
         every { Calendar.getInstance() } returns mockedCalendar
 
-        val mockElectricityPrice = mockk<ElectricityPrice>()
-        coEvery { mockElectricityPrice.getCurrent(
-            ElectricityPrice.Region.NO1
-        ) } returns "0.5"
-
         // Set the content
         composeTestRule.setContent {
-            HomeScreen(mockPaddingValues, mockMainViewModel, electricityPrice = mockElectricityPrice)
+            HomeScreen(mockPaddingValues, mockHomeViewModel)
         }
 
         // Verify that the content is displayed

@@ -15,7 +15,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -25,7 +25,9 @@ import com.example.stromkalkulator.ui.screens.DetailedView
 import com.example.stromkalkulator.ui.screens.HomeScreen
 import com.example.stromkalkulator.ui.theme.StromKalkulatorTheme
 import com.example.stromkalkulator.viewmodels.MainViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +46,11 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-
+/**
+ * A sealed class that represents the screens we have in the app: home, detailed and calculator.
+ *
+ * @property route The route name of the screen.
+ */
 sealed class Screen(val route: String) {
     object Home : Screen("home")
     object Detailed : Screen("detailed")
@@ -59,15 +65,15 @@ sealed class Screen(val route: String) {
  */
 @Composable
 fun MainView(navController: NavHostController) {
-    val viewModel: MainViewModel = viewModel()
+    val mainViewModel: MainViewModel = hiltViewModel()
 
     Scaffold (
-        topBar = { TopBar(viewModel) },
+        topBar = { TopBar(mainViewModel) },
         bottomBar = { Bottombar(navController) }
     ) { innerPadding ->
         NavHost(navController, startDestination = Screen.Home.route) {
-            composable(Screen.Home.route) { HomeScreen(innerPadding, viewModel) }
-            composable(Screen.Detailed.route) { DetailedView(innerPadding, viewModel) }
+            composable(Screen.Home.route) { HomeScreen(innerPadding) }
+            composable(Screen.Detailed.route) { DetailedView(innerPadding) }
             composable(Screen.Calculator.route) { CalculatorScreen(innerPadding) }
         }
     }
@@ -89,17 +95,12 @@ private data class ScreensItem(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun TopBar(viewModel: MainViewModel) {
+private fun TopBar(mainViewModel: MainViewModel) {
     var expanded by remember { mutableStateOf(false) }
     TopAppBar(
         title = {
             Text(text = stringResource(
-                    id = viewModel
-                        .mainStateFlow
-                        .collectAsState()
-                        .value
-                        .region
-                        .stringId
+                id = mainViewModel.getRegion().collectAsState().value.region.stringId
                 )
             )
         },
@@ -123,7 +124,8 @@ private fun TopBar(viewModel: MainViewModel) {
                     DropdownMenuItem(
                         text = { Text(text = stringResource(id = region.stringId))},
                         onClick = {
-                            viewModel.setRegion(region)
+                            mainViewModel.setRegion(region)
+                            mainViewModel.updateTempsAndPrices()
                             expanded = false
                         }
                     )
