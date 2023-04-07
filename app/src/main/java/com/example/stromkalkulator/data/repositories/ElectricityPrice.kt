@@ -1,5 +1,6 @@
 package com.example.stromkalkulator.data.repositories
 
+import com.example.stromkalkulator.R
 import com.example.stromkalkulator.data.models.electricity.Day
 import com.example.stromkalkulator.data.models.electricity.HourPrice
 import com.example.stromkalkulator.data.models.electricity.Week
@@ -9,8 +10,18 @@ import io.ktor.client.request.*
 import java.util.Calendar
 
 
+@Suppress("SameReturnValue")
 class ElectricityPrice (private val client: HttpClient) {
-    suspend fun getTomorrow(calendar: Calendar = Calendar.getInstance()): Day {
+
+    enum class Region(val stringId: Int) {
+        NO1(R.string.region_east),
+        NO2(R.string.region_south),
+        NO3(R.string.region_middle),
+        NO4(R.string.region_north),
+        NO5(R.string.region_west);
+    }
+
+    suspend fun getTomorrow(region: Region, calendar: Calendar = Calendar.getInstance()): Day {
 
         if (calendar.get(Calendar.HOUR_OF_DAY) < 14) { return Day(emptyList()) }
 
@@ -26,8 +37,7 @@ class ElectricityPrice (private val client: HttpClient) {
 
 
             val url = "https://www.hvakosterstrommen.no/api/v1/prices/" +
-                    calendar.get(Calendar.YEAR).toString() + "/" + monthString + "-" + dayString + "_NO5.json"
-            println(url)
+                "${calendar.get(Calendar.YEAR)}/${monthString}-${dayString}_${region}.json"
 
             val dayList: List<HourPrice> = client.get(url).body()
             Day(dayList)
@@ -36,7 +46,7 @@ class ElectricityPrice (private val client: HttpClient) {
         }
     }
 
-    suspend fun getToday(calendar: Calendar = Calendar.getInstance()): Day {
+    suspend fun getToday(region: Region, calendar: Calendar = Calendar.getInstance()): Day {
         return try {
             val year = calendar.get(Calendar.YEAR).toString()
 
@@ -46,8 +56,8 @@ class ElectricityPrice (private val client: HttpClient) {
             if (month.length == 1) { month = "0$month" }
             if (day.length == 1) { day = "0$day" }
 
-            val url = "https://www.hvakosterstrommen.no/api/v1/prices/" + year +
-                    "/" + month + "-" + day + "_NO5.json"
+            val url = "https://www.hvakosterstrommen.no/api/v1/prices/" +
+                    "${year}/${month}-${day}_${region}.json"
             println(url)
             val dayList: List<HourPrice> = client.get(url).body()
             Day(dayList)
@@ -58,8 +68,8 @@ class ElectricityPrice (private val client: HttpClient) {
     private fun getHourFromDate(time: String):
             Int = time.split("T")[1].subSequence(0,2).toString().toInt()
 
-    suspend fun getCurrent(calendar: Calendar = Calendar.getInstance()): String {
-        val thisDay = getToday()
+    suspend fun getCurrent(region: Region, calendar: Calendar = Calendar.getInstance()): String {
+        val thisDay = getToday(region)
         val currentTime = calendar.get(Calendar.HOUR_OF_DAY)
 
         thisDay.hours.forEach {
@@ -70,7 +80,7 @@ class ElectricityPrice (private val client: HttpClient) {
         return "Not found"
     }
 
-    suspend fun getWeek(calendar: Calendar = Calendar.getInstance()): Week {
+    suspend fun getWeek(region: Region, calendar: Calendar = Calendar.getInstance()): Week {
         val urlList = mutableListOf<String>()
         for (i in 0..6) {
             var month = (calendar.get(Calendar.MONTH) + 1).toString()
@@ -79,7 +89,7 @@ class ElectricityPrice (private val client: HttpClient) {
             if (day.length == 1) { day = "0$day" }
 
             val url = "https://www.hvakosterstrommen.no/api/v1/prices/" +
-                    calendar.get(Calendar.YEAR) + "/" + month + "-" + day + "_NO5.json"
+                "${calendar.get(Calendar.YEAR)}/${month}-${day}_${region}.json"
             urlList.add(url)
             calendar.add(Calendar.DAY_OF_YEAR, -1)
         }

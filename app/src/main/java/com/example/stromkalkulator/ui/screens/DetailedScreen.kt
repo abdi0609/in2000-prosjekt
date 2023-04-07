@@ -12,16 +12,19 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.stromkalkulator.data.models.electricity.Day
 import com.example.stromkalkulator.data.repositories.ElectricityPrice
 import com.example.stromkalkulator.viewmodels.DetailedViewModel
+import com.example.stromkalkulator.viewmodels.MainViewModel
 
 
 @Composable
-fun DetailedView(innerPadding: PaddingValues) {
+fun DetailedView(innerPadding: PaddingValues, mainViewModel: MainViewModel) {
     val viewModel: DetailedViewModel = viewModel()
 
     val electricityPrice = ElectricityPrice(viewModel.httpClient)
     val hours = produceState(
         initialValue = Day(emptyList()),
-        producer = { value = electricityPrice.getTomorrow() })
+        producer = {
+            value = electricityPrice.getTomorrow(mainViewModel.mainStateFlow.value.region)
+        })
 
     LazyColumn(
         modifier = Modifier.padding(innerPadding)

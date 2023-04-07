@@ -19,17 +19,23 @@ import com.example.stromkalkulator.data.repositories.ElectricityPrice
 import com.example.stromkalkulator.ui.components.PriceTemperatureGraph
 import com.example.stromkalkulator.ui.theme.*
 import com.example.stromkalkulator.viewmodels.HomeViewModel
+import com.example.stromkalkulator.viewmodels.MainViewModel
 import java.math.RoundingMode
 import java.text.DecimalFormat
 
 @Composable
-fun HomeScreen(paddingValue: PaddingValues) {
-    val viewModel: HomeViewModel = viewModel()
+fun HomeScreen(
+    paddingValue: PaddingValues,
+    mainViewModel: MainViewModel,
+    viewModel: HomeViewModel = viewModel(),
+    electricityPrice: ElectricityPrice = ElectricityPrice(viewModel.httpClient)
+) {
     val uiState = viewModel.homeStateFlow.collectAsState()
-    val electricityPrice = ElectricityPrice(viewModel.httpClient)
-    val currentPrice = produceState<String>(
+    val currentPrice = produceState(
         initialValue = "0.0",
-        producer = { value = electricityPrice.getCurrent() })
+        producer = {
+            value = electricityPrice.getCurrent(mainViewModel.mainStateFlow.value.region)
+        })
 
     Column (
         modifier = Modifier
@@ -47,7 +53,7 @@ fun HomeScreen(paddingValue: PaddingValues) {
 
 // Card that shows current price
 @Composable
-fun CurrentPriceBubble(priceString: String) {
+private fun CurrentPriceBubble(priceString: String) {
     val price = priceString.toDouble()
     val fontSize = 25.sp
 
@@ -91,5 +97,5 @@ fun CurrentPriceBubble(priceString: String) {
 @Preview(showBackground = true)
 @Composable
 private fun HomeScreenPreview() {
-    HomeScreen(PaddingValues(16.dp))
+    HomeScreen(PaddingValues(16.dp), MainViewModel())
 }

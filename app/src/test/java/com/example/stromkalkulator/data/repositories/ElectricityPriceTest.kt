@@ -46,7 +46,7 @@ internal class ElectricityPriceTest {
         val client = createMockClient(url, mockResponse)
 
         val electricityPrice = ElectricityPrice(client)
-        val result = electricityPrice.getTomorrow(mockedCalendar)
+        val result = electricityPrice.getTomorrow(ElectricityPrice.Region.NO5, mockedCalendar)
 
         assertEquals(3, result.hours.size)
         assertEquals("1.2895", result.hours[0].NOK_per_kWh)
@@ -63,7 +63,7 @@ internal class ElectricityPriceTest {
 
         val client = HttpClient(CIO) { install(ContentNegotiation) { json() } }
         val electricityPrice = ElectricityPrice(client)
-        val result = electricityPrice.getTomorrow(calendarMock)
+        val result = electricityPrice.getTomorrow(ElectricityPrice.Region.NO5, calendarMock)
 
         assertEquals(0, result.hours.size)
     }
@@ -72,24 +72,34 @@ internal class ElectricityPriceTest {
     fun getTomorrowException() = runBlocking() {
         val client = createMockClient("", "")
         val electricityPrice = ElectricityPrice(client)
-        val result = electricityPrice.getTomorrow(mockedCalendar)
+        val result = electricityPrice.getTomorrow(ElectricityPrice.Region.NO5, mockedCalendar)
 
         assertEquals(0, result.hours.size)
     }
 
     @Test
     fun getToday() = runBlocking() {
-        val url = "https://www.hvakosterstrommen.no/api/v1/prices/2023/04-07_NO5.json"
-        val mockResponse = """
+        val url1 = "https://www.hvakosterstrommen.no/api/v1/prices/2023/04-07_NO5.json"
+        val url2 = "https://www.hvakosterstrommen.no/api/v1/prices/2023/04-07_NO4.json"
+
+        val mockResponse1 = """
             [{"NOK_per_kWh":1.2895,"EUR_per_kWh":0.11478,"EXR":11.2345,"time_start":"2023-04-06T00:00:00+02:00","time_end":"2023-04-06T01:00:00+02:00"},
             {"NOK_per_kWh":1.2759,"EUR_per_kWh":0.11357,"EXR":11.2345,"time_start":"2023-04-06T01:00:00+02:00","time_end":"2023-04-06T02:00:00+02:00"},
             {"NOK_per_kWh":1.27512,"EUR_per_kWh":0.1135,"EXR":11.2345,"time_start":"2023-04-06T02:00:00+02:00","time_end":"2023-04-06T03:00:00+02:00"}]
         """.trimIndent()
 
-        val mockClient = createMockClient(url, mockResponse)
+        val mockResponse2 = """
+            [{"NOK_per_kWh":2.27512,"EUR_per_kWh":0.1135,"EXR":11.2345,"time_start":"2023-04-06T02:00:00+02:00","time_end":"2023-04-06T03:00:00+02:00"}]
+        """.trimIndent()
 
-        val electricityPrice = ElectricityPrice(mockClient)
-        val result = electricityPrice.getToday(mockedCalendar)
+        val mockClient1 = createMockClient(url1, mockResponse1)
+        val mockClient2 = createMockClient(url2, mockResponse2)
+
+        val electricityPrice1 = ElectricityPrice(mockClient1)
+        val result = electricityPrice1.getToday(ElectricityPrice.Region.NO5, mockedCalendar)
+
+        val electricityPrice2 = ElectricityPrice(mockClient2)
+        val result2 = electricityPrice2.getToday(ElectricityPrice.Region.NO4, mockedCalendar)
 
         assertEquals(3, result.hours.size)
         assertEquals("1.2895", result.hours[0].NOK_per_kWh)
@@ -97,13 +107,15 @@ internal class ElectricityPriceTest {
         assertEquals("2023-04-06T01:00:00+02:00", result.hours[1].time_start)
         assertEquals("11.2345", result.hours[2].EXR)
         assertEquals("2023-04-06T03:00:00+02:00", result.hours[2].time_end)
+
+        assertEquals(1, result2.hours.size)
     }
 
     @Test
     fun getTodayException() = runBlocking() {
         val client = createMockClient("", "")
         val electricityPrice = ElectricityPrice(client)
-        val result = electricityPrice.getToday(mockedCalendar)
+        val result = electricityPrice.getToday(ElectricityPrice.Region.NO5, mockedCalendar)
 
         assertEquals(0, result.hours.size)
     }
@@ -134,7 +146,7 @@ internal class ElectricityPriceTest {
         val mockClient = createMockClient(url, mockResponse)
 
         val electricityPrice = ElectricityPrice(mockClient)
-        val result = electricityPrice.getCurrent(mockedCalendar)
+        val result = electricityPrice.getCurrent(ElectricityPrice.Region.NO5, mockedCalendar)
 
         assertEquals("1.17592", result)
     }
@@ -147,7 +159,7 @@ internal class ElectricityPriceTest {
         val mockClient = createMockClient(url, mockResponse)
 
         val electricityPrice = ElectricityPrice(mockClient)
-        val result = electricityPrice.getCurrent(mockedCalendar)
+        val result = electricityPrice.getCurrent(ElectricityPrice.Region.NO5, mockedCalendar)
 
         assertEquals("Not found", result)
     }
@@ -222,7 +234,7 @@ internal class ElectricityPriceTest {
         }
 
         val electricityPrice = ElectricityPrice(client)
-        val result = electricityPrice.getWeek()
+        val result = electricityPrice.getWeek(ElectricityPrice.Region.NO5, mockedCalendar)
 
         assertEquals(7, result.days.size)
     }

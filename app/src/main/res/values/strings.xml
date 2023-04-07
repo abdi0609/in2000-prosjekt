@@ -5,4 +5,9 @@
     <string name="calculator_button_text">Calculator</string>
     <string name="price_chart_label_text">Price</string>
     <string name="temperature_chart_label_text">Temperature</string>
+    <string name="region_east">Oslo/Eastern-Norway</string>
+    <string name="region_south">Kristiansand/Southern-Norway</string>
+    <string name="region_middle">Trondheim/Middle-Norway</string>
+    <string name="region_north">Tromsø/Northern-Norway</string>
+    <string name="region_west">Bergen/Western-Norway</string>
 </resources>

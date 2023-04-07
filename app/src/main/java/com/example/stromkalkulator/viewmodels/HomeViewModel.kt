@@ -30,8 +30,10 @@ class HomeViewModel: ViewModel() {
                 it.copy(
                     temperatures = temperatureRepository.getTemperatureData(50.0,10.0),
                     // TODO: This is messy, find a better raw -> presentable data method
+                    // TODO: Make the region dynamic
                     // Adds all the week's day's hourprices to a list
-                    prices = electricityPrice.getWeek().days.fold(mutableListOf()) { acc, i ->
+                    prices = electricityPrice.getWeek(ElectricityPrice.Region.NO1)
+                        .days.fold(mutableListOf()) { acc, i ->
                         acc.addAll(i.hours)
                         acc
                     }
