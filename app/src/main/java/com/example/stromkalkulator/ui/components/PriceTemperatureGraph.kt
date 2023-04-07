@@ -25,6 +25,7 @@ import com.patrykandpatrick.vico.compose.axis.vertical.endAxis
 import com.patrykandpatrick.vico.compose.axis.vertical.startAxis
 import com.patrykandpatrick.vico.compose.chart.Chart
 import com.patrykandpatrick.vico.compose.chart.column.columnChart
+import com.patrykandpatrick.vico.compose.chart.edges.rememberFadingEdges
 import com.patrykandpatrick.vico.compose.chart.line.lineChart
 import com.patrykandpatrick.vico.compose.component.shapeComponent
 import com.patrykandpatrick.vico.compose.component.textComponent
@@ -54,17 +55,6 @@ private val color3 = Color(COLOR_3_CODE)
 private val color4 = Color(COLOR_4_CODE)
 private val chartColors = listOf(color1, color2)
 
-
-private val axisTitleHorizontalPaddingValue = 8.dp
-private val axisTitleVerticalPaddingValue = 2.dp
-private val axisTitlePadding = dimensionsOf(
-    axisTitleHorizontalPaddingValue,
-    axisTitleVerticalPaddingValue
-)
-private val axisTitleMarginValue = 4.dp
-private val startAxisTitleMargins = dimensionsOf(end = axisTitleMarginValue)
-
-
 private val legendItemLabelTextSize = 12.sp
 private val legendItemIconSize = 8.dp
 private val legendItemIconPaddingValue = 10.dp
@@ -87,9 +77,12 @@ fun PriceTemperatureGraph(temps: List<Temperature>, prices: List<HourPrice>) {
     }
     val chartEntryModel1 = ChartEntryModelProducer(priceList)
     val chartEntryModel2 = ChartEntryModelProducer(tempList)
-
     val composedModel = chartEntryModel1 + chartEntryModel2
-    Surface(Modifier.padding(25.dp).fillMaxSize()) {
+
+    Surface(Modifier
+            .padding(25.dp)
+            .fillMaxSize()
+    ) {
         ProvideChartStyle(rememberChartStyle(listOf(color1), listOf(color2))) {
             val priceChart = columnChart(
                 mergeMode = ColumnChart.MergeMode.Stack,
@@ -99,27 +92,32 @@ fun PriceTemperatureGraph(temps: List<Temperature>, prices: List<HourPrice>) {
                 targetVerticalAxisPosition = AxisPosition.Vertical.End,
 
                 )
-            val titleComponent = textComponent(
-                color = Color.Black,
-                background = shapeComponent(Shapes.pillShape, color1),
-                padding = axisTitlePadding,
-                margins = startAxisTitleMargins,
-                typeface = Typeface.MONOSPACE,
-            )
             Chart(
                 chart = remember(priceChart, tempChart) {priceChart + tempChart},
                 chartModelProducer = composedModel,
                 startAxis = startAxis(
-                    horizontalLabelPosition = VerticalAxis.HorizontalLabelPosition.Outside,
+                    guideline = null,
+                    horizontalLabelPosition = VerticalAxis.HorizontalLabelPosition.Inside,
+                    labelRotationDegrees = 20F,
+                    maxLabelCount = 5,
+                    valueFormatter = { value, _ ->
+                        "${"%.2f".format(value)}kr"
+                    }
                 ),
                 bottomAxis = bottomAxis(
-                    /*
-                    title = "Hour",
-                    titleComponent = titleComponent
-                     */
+                    labelRotationDegrees = 0F,
                 ),
-                endAxis = endAxis(),
-                legend = rememberLegend()
+                endAxis = endAxis(
+                    guideline = null,
+                    horizontalLabelPosition = VerticalAxis.HorizontalLabelPosition.Inside,
+                    labelRotationDegrees = 20F,
+                    maxLabelCount = 5,
+                    valueFormatter = { value, _ ->
+                        "${"%.1f".format(value)}°"
+                    }
+                ),
+                legend = rememberLegend(),
+                fadingEdges = rememberFadingEdges()
             )
         }
     }
