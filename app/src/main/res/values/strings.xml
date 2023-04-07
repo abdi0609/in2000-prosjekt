@@ -3,4 +3,6 @@
     <string name="home_button_text">Home</string>
     <string name="detailed_button_text">Detailed</string>
     <string name="calculator_button_text">Calculator</string>
+    <string name="price_chart_label_text">Price</string>
+    <string name="temperature_chart_label_text">Temperature</string>
 </resources>

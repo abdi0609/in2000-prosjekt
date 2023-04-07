@@ -13,6 +13,8 @@ import io.ktor.serialization.kotlinx.json.*
 import kotlinx.coroutines.launch
 import java.io.IOException
 
+
+@Deprecated("Only one viewModel is needed per screen",ReplaceWith("HomeViewModel"))
 class TemperatureViewModel : ViewModel() {
     private val httpClient: HttpClient = HttpClient(CIO) { install(ContentNegotiation) { json() } }
     private val repository = TemperatureRepository(httpClient)

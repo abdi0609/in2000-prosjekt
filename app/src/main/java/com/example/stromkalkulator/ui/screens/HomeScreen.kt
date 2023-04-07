@@ -6,6 +6,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.produceState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -15,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.stromkalkulator.data.repositories.ElectricityPrice
+import com.example.stromkalkulator.ui.components.PriceTemperatureGraph
 import com.example.stromkalkulator.ui.theme.*
 import com.example.stromkalkulator.viewmodels.HomeViewModel
 import java.math.RoundingMode
@@ -23,6 +25,7 @@ import java.text.DecimalFormat
 @Composable
 fun HomeScreen(paddingValue: PaddingValues) {
     val viewModel: HomeViewModel = viewModel()
+    val uiState = viewModel.homeStateFlow.collectAsState()
     val electricityPrice = ElectricityPrice(viewModel.httpClient)
     val currentPrice = produceState<String>(
         initialValue = "0.0",
@@ -37,26 +40,8 @@ fun HomeScreen(paddingValue: PaddingValues) {
     ) {
         Spacer(modifier = Modifier.size(40.dp))
         CurrentPriceBubble(priceString = currentPrice.value)
-        Card (
-            modifier = Modifier.size(250.dp, 250.dp),
-            shape = CircleShape,
-        ) {
-            Box (
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center,
-            ) {
-                Text(text = "${currentPrice.value} kr/kwh")
-            }
-        }
-
-        Card(modifier = Modifier.size(300.dp, 300.dp)) {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(text = "I am a graph")
-            }
-        }
+        PriceTemperatureGraph(temps = uiState.value.temperatures, prices = uiState.value.prices)
+        Spacer(modifier = Modifier.height(60.dp)) // FIXME: Space på bunnen her funker ikke
     }
 }
 

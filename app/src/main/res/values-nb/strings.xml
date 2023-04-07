@@ -4,4 +4,6 @@
     <string name="home_button_text">Hjem</string>
     <string name="detailed_button_text">Detaljert</string>
     <string name="calculator_button_text">Kalkulator</string>
+    <string name="price_chart_label_text">Pris</string>
+    <string name="temperature_chart_label_text">Temperatur</string>
 </resources>

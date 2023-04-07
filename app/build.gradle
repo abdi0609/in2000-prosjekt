@@ -88,6 +88,21 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
 
+
+
+    // ---- GRAPHING DEPS ----
+    // Includes the core logic for charts and other elements.
+    implementation "com.patrykandpatrick.vico:core:1.6.4"
+    // For Jetpack Compose.
+    implementation "com.patrykandpatrick.vico:compose:1.6.4"
+    // For the view system.
+    implementation "com.patrykandpatrick.vico:views:1.6.4"
+    // For `compose`. Creates a `ChartStyle` based on an M2 Material Theme.
+    implementation "com.patrykandpatrick.vico:compose-m2:1.6.4"
+    // For `compose`. Creates a `ChartStyle` based on an M3 Material Theme.
+    implementation "com.patrykandpatrick.vico:compose-m3:1.6.4"
+    // ---- END GRAPHING DEPS ----
+
     // Test
     testImplementation "io.ktor:ktor-client-mock:$ktor_version"
     testImplementation "io.mockk:mockk:1.12.0"
