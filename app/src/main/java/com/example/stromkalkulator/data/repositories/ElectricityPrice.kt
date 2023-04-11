@@ -95,11 +95,14 @@ class ElectricityPrice (private val client: HttpClient) {
         }
 
         val hourPriceList = emptyList<Day>().toMutableList()
-        for (url in urlList) {
-            val dayList: List<HourPrice> = client.get(url).body()
-            hourPriceList.add(Day(dayList))
+        try {
+            for (url in urlList) {
+                val dayList: List<HourPrice> = client.get(url).body()
+                hourPriceList.add(Day(dayList))
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
-
         return Week(hourPriceList)
     }
 }

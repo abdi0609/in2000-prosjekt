@@ -49,7 +49,6 @@ class SharedViewModel @Inject constructor(): ViewModel() {
                         }
                 )
             }
-            println("\n\n"+sharedState.value.prices[0])
         }
     }
 
