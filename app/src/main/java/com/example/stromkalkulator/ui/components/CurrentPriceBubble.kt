@@ -27,16 +27,16 @@ fun CurrentPriceBubble(priceString: String) {
     val priceText = "%.2f".format(price)
 
     val textColor =
-        if (price == null) Red
-        else if (price < 1.2) GreenTextContrast
-        else if (price < 2) YellowTextContrast
-        else RedTextContrast
+        if (price == null) extendedColors().onRed
+        else if (price < 1.2) extendedColors().onGreen
+        else if (price < 2) extendedColors().onYellow
+        else extendedColors().onRed
 
     val backgroundColor =
-        if (price == null) Red
-        else if (price < 1.2) Green
-        else if (price < 2) Yellow
-        else Red
+        if (price == null) extendedColors().red
+        else if (price < 1.2) extendedColors().green
+        else if (price < 2) extendedColors().yellow
+        else extendedColors().red
 
     Card (
         modifier = Modifier.size(200.dp, 200.dp),

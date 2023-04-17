@@ -11,9 +11,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
-import com.example.stromkalkulator.ui.theme.Green
-import com.example.stromkalkulator.ui.theme.Red
-import com.example.stromkalkulator.ui.theme.Yellow
+import com.example.stromkalkulator.ui.theme.extendedColors
 
 // shows info for CurrentPriceBubble
 @Composable
@@ -36,13 +34,13 @@ fun InfoBubble() {
             text = { Text(buildAnnotatedString {
                 append("Displays the average kr/kwh price for the current hour." +
                         "\nThe color changes based on the price:\n")
-                withStyle(style = SpanStyle(color = Green, fontWeight = FontWeight.ExtraBold)) {
+                withStyle(style = SpanStyle(color = extendedColors().green, fontWeight = FontWeight.ExtraBold)) {
                     append("Low\n")
                 }
-                withStyle(style = SpanStyle(color = Yellow, fontWeight = FontWeight.ExtraBold)) {
+                withStyle(style = SpanStyle(color = extendedColors().yellow, fontWeight = FontWeight.ExtraBold)) {
                     append("Medium\n")
                 }
-                withStyle(style = SpanStyle(color = Red, fontWeight = FontWeight.ExtraBold)) {
+                withStyle(style = SpanStyle(color = extendedColors().red, fontWeight = FontWeight.ExtraBold)) {
                     append("High")
                 }
             })
