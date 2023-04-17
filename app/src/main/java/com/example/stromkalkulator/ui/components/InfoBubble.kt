@@ -25,7 +25,8 @@ fun InfoBubble() {
         Icon(
             imageVector =  Icons.Default.Info,
             contentDescription = "info",
-            modifier = Modifier.size(30.dp)
+            modifier = Modifier.size(30.dp),
+            tint = MaterialTheme.colorScheme.outline
         )
     }
     if (popupControl) {
