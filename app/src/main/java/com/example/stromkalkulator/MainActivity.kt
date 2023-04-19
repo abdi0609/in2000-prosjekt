@@ -20,7 +20,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.stromkalkulator.data.repositories.ElectricityPrice
-import com.example.stromkalkulator.ui.screens.CalculatorScreen
+import com.example.stromkalkulator.ui.screens.CalculatorView
 import com.example.stromkalkulator.ui.screens.DetailedView
 import com.example.stromkalkulator.ui.screens.HomeScreen
 import com.example.stromkalkulator.ui.theme.StromKalkulatorTheme
@@ -75,7 +75,7 @@ fun MainView(navController: NavHostController) {
         NavHost(navController, startDestination = Screen.Home.route) {
             composable(Screen.Home.route) { HomeScreen(innerPadding) }
             composable(Screen.Detailed.route) { DetailedView(innerPadding) }
-            composable(Screen.Calculator.route) { CalculatorScreen(innerPadding) }
+            composable(Screen.Calculator.route) { CalculatorView(innerPadding) }
         }
     }
 }
