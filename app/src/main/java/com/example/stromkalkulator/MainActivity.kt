@@ -63,6 +63,7 @@ sealed class Screen(val route: String) {
  *
  * @param navController The NavController used to handle navigation between screens.
  */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainView(navController: NavHostController) {
     val mainViewModel: MainViewModel = hiltViewModel()
