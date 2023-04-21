@@ -21,9 +21,9 @@ import com.example.stromkalkulator.ui.theme.*
 
 // Card that shows current price
 @Composable
-fun CurrentPriceBubble(priceString: String) {
+fun CurrentPriceBubble(price: Double) {
     val fontSize = 35.sp
-    val price = priceString.toDoubleOrNull()
+    //val price = priceString.toDoubleOrNull()
     val priceText = "%.2f".format(price)
 
     val textColor =

@@ -1,5 +1,6 @@
 package com.example.stromkalkulator.data.repositories
 
+import com.example.stromkalkulator.data.Region
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.engine.mock.*
@@ -46,13 +47,13 @@ internal class ElectricityPriceTest {
         val client = createMockClient(url, mockResponse)
 
         val electricityPrice = ElectricityPrice(client)
-        val result = electricityPrice.getTomorrow(ElectricityPrice.Region.NO5, mockedCalendar)
+        val result = electricityPrice.getTomorrow(Region.NO5, mockedCalendar)
 
         assertEquals(3, result.hours.size)
-        assertEquals("1.2895", result.hours[0].NOK_per_kWh)
-        assertEquals("0.11357", result.hours[1].EUR_per_kWh)
+        assertEquals(1.2895, result.hours[0].NOK_per_kWh)
+        assertEquals(0.11357, result.hours[1].EUR_per_kWh)
         assertEquals("2023-04-06T01:00:00+02:00", result.hours[1].time_start)
-        assertEquals("11.2345", result.hours[2].EXR)
+        assertEquals(11.2345, result.hours[2].EXR)
         assertEquals("2023-04-06T03:00:00+02:00", result.hours[2].time_end)
     }
 
@@ -63,7 +64,7 @@ internal class ElectricityPriceTest {
 
         val client = HttpClient(CIO) { install(ContentNegotiation) { json() } }
         val electricityPrice = ElectricityPrice(client)
-        val result = electricityPrice.getTomorrow(ElectricityPrice.Region.NO5, calendarMock)
+        val result = electricityPrice.getTomorrow(Region.NO5, calendarMock)
 
         assertEquals(0, result.hours.size)
     }
@@ -72,7 +73,7 @@ internal class ElectricityPriceTest {
     fun getTomorrowException() = runBlocking() {
         val client = createMockClient("", "")
         val electricityPrice = ElectricityPrice(client)
-        val result = electricityPrice.getTomorrow(ElectricityPrice.Region.NO5, mockedCalendar)
+        val result = electricityPrice.getTomorrow(Region.NO5, mockedCalendar)
 
         assertEquals(0, result.hours.size)
     }
@@ -96,16 +97,16 @@ internal class ElectricityPriceTest {
         val mockClient2 = createMockClient(url2, mockResponse2)
 
         val electricityPrice1 = ElectricityPrice(mockClient1)
-        val result = electricityPrice1.getToday(ElectricityPrice.Region.NO5, mockedCalendar)
+        val result = electricityPrice1.getToday(Region.NO5, mockedCalendar)
 
         val electricityPrice2 = ElectricityPrice(mockClient2)
-        val result2 = electricityPrice2.getToday(ElectricityPrice.Region.NO4, mockedCalendar)
+        val result2 = electricityPrice2.getToday(Region.NO4, mockedCalendar)
 
         assertEquals(3, result.hours.size)
-        assertEquals("1.2895", result.hours[0].NOK_per_kWh)
-        assertEquals("0.11357", result.hours[1].EUR_per_kWh)
+        assertEquals(1.2895, result.hours[0].NOK_per_kWh)
+        assertEquals(0.11357, result.hours[1].EUR_per_kWh)
         assertEquals("2023-04-06T01:00:00+02:00", result.hours[1].time_start)
-        assertEquals("11.2345", result.hours[2].EXR)
+        assertEquals(11.2345, result.hours[2].EXR)
         assertEquals("2023-04-06T03:00:00+02:00", result.hours[2].time_end)
 
         assertEquals(1, result2.hours.size)
@@ -115,7 +116,7 @@ internal class ElectricityPriceTest {
     fun getTodayException() = runBlocking() {
         val client = createMockClient("", "")
         val electricityPrice = ElectricityPrice(client)
-        val result = electricityPrice.getToday(ElectricityPrice.Region.NO5, mockedCalendar)
+        val result = electricityPrice.getToday(Region.NO5, mockedCalendar)
 
         assertEquals(0, result.hours.size)
     }
@@ -146,9 +147,9 @@ internal class ElectricityPriceTest {
         val mockClient = createMockClient(url, mockResponse)
 
         val electricityPrice = ElectricityPrice(mockClient)
-        val result = electricityPrice.getCurrent(ElectricityPrice.Region.NO5, mockedCalendar)
+        val result = electricityPrice.getCurrent(Region.NO5, mockedCalendar)
 
-        assertEquals("1.17592", result)
+        assertEquals(1.17592, result)
     }
 
     @Test
@@ -159,9 +160,9 @@ internal class ElectricityPriceTest {
         val mockClient = createMockClient(url, mockResponse)
 
         val electricityPrice = ElectricityPrice(mockClient)
-        val result = electricityPrice.getCurrent(ElectricityPrice.Region.NO5, mockedCalendar)
+        val result = electricityPrice.getCurrent(Region.NO5, mockedCalendar)
 
-        assertEquals("Not found", result)
+        assertEquals(0.0, result)
     }
 
     @Test
@@ -234,7 +235,7 @@ internal class ElectricityPriceTest {
         }
 
         val electricityPrice = ElectricityPrice(client)
-        val result = electricityPrice.getWeek(ElectricityPrice.Region.NO5, mockedCalendar)
+        val result = electricityPrice.getWeek(Region.NO5, mockedCalendar)
 
         assertEquals(7, result.days.size)
     }

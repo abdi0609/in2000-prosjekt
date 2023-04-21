@@ -3,23 +3,35 @@ package com.example.stromkalkulator.ui.screens
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.stromkalkulator.ui.components.InfoBubble
-import com.example.stromkalkulator.ui.components.CurrentPriceBubble
-import com.example.stromkalkulator.ui.components.PriceTemperatureGraph
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.stromkalkulator.ui.components.*
 import com.example.stromkalkulator.viewmodels.HomeViewModel
 
 @Composable
 fun HomeScreen(
     paddingValue: PaddingValues,
-    viewModel: HomeViewModel = hiltViewModel(),
+    viewModel: HomeViewModel = viewModel(),
 ) {
-    val currentPrice = viewModel.getCurrentPrice().collectAsState().value.currentPrice
+    Scaffold(
+        topBar = { TopBar(viewModel, viewModel.homeStateFlow.collectAsState().value.region) },
+        content = { MainView(it, viewModel) }
+    )
+        
+}
+
+@Composable
+private fun MainView(
+    paddingValue: PaddingValues,
+    viewModel: HomeViewModel
+) {
+    val state = viewModel.homeStateFlow.collectAsState()
+    val currentPrice = state.value.currentPrice
 
     Column (
         modifier = Modifier
@@ -31,17 +43,13 @@ fun HomeScreen(
     ) {
         Spacer(modifier = Modifier.size(40.dp))
         Box(contentAlignment = Alignment.TopEnd) {
-            CurrentPriceBubble(priceString = currentPrice)
+            CurrentPriceBubble(price = currentPrice)
             InfoBubble()
         }
-        PriceTemperatureGraph(temps = viewModel.getTemperatures(), prices = viewModel.getPrices())
+        PriceTemperatureGraph(viewModel)
         Spacer(modifier = Modifier.height(60.dp)) // FIXME: Space på bunnen her funker ikke
     }
 }
-
-
-
-
 
 @Preview(showBackground = true)
 @Composable

@@ -19,7 +19,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.stromkalkulator.R
-import com.example.stromkalkulator.data.repositories.ElectricityPrice
 import com.example.stromkalkulator.viewmodels.DetailedViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -96,9 +95,8 @@ fun InfoCard(icon: Int, price: String) {
 
 @ExperimentalMaterial3Api
 @Composable
-fun CalculatorView(innerPadding: PaddingValues) {
+fun CalculatorScreen(innerPadding: PaddingValues) {
     val viewModel: DetailedViewModel = viewModel()
-    val electricityPrice = ElectricityPrice(viewModel.httpClient)
     val valueRange: ClosedFloatingPointRange<Float> = 0f..1f
     var value by remember { mutableStateOf(0f) }
 

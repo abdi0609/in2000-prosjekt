@@ -15,16 +15,13 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.stromkalkulator.data.repositories.ElectricityPrice
-import com.example.stromkalkulator.ui.screens.CalculatorView
-import com.example.stromkalkulator.ui.screens.DetailedView
+import com.example.stromkalkulator.ui.screens.CalculatorScreen
+import com.example.stromkalkulator.ui.screens.DetailedScreen
 import com.example.stromkalkulator.ui.screens.HomeScreen
 import com.example.stromkalkulator.ui.theme.StromKalkulatorTheme
-import com.example.stromkalkulator.viewmodels.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -66,16 +63,14 @@ sealed class Screen(val route: String) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainView(navController: NavHostController) {
-    val mainViewModel: MainViewModel = hiltViewModel()
 
     Scaffold (
-        topBar = { TopBar(mainViewModel) },
         bottomBar = { Bottombar(navController) }
     ) { innerPadding ->
         NavHost(navController, startDestination = Screen.Home.route) {
             composable(Screen.Home.route) { HomeScreen(innerPadding) }
-            composable(Screen.Detailed.route) { DetailedView(innerPadding) }
-            composable(Screen.Calculator.route) { CalculatorView(innerPadding) }
+            composable(Screen.Detailed.route) { DetailedScreen(innerPadding) }
+            composable(Screen.Calculator.route) { CalculatorScreen(innerPadding) }
         }
     }
 }
@@ -94,47 +89,6 @@ private data class ScreensItem(
     val description: String
 )
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun TopBar(mainViewModel: MainViewModel) {
-    var expanded by remember { mutableStateOf(false) }
-    TopAppBar(
-        title = {
-            Text(text = stringResource(
-                id = mainViewModel.getRegion().collectAsState().value.region.stringId
-                )
-            )
-        },
-        actions = {
-            IconButton(
-                content = {
-                    Icon(
-                        imageVector = ImageVector.vectorResource(R.drawable.baseline_edit_location_24),
-                        contentDescription = "edit_location" // TODO: Replace with string resource
-                    )
-                },
-                onClick = {
-                    expanded = !expanded
-                },
-            )
-            DropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { expanded = false }
-            ) {
-                ElectricityPrice.Region.values().forEach { region ->
-                    DropdownMenuItem(
-                        text = { Text(text = stringResource(id = region.stringId))},
-                        onClick = {
-                            mainViewModel.setRegion(region)
-                            mainViewModel.updateTempsAndPrices()
-                            expanded = false
-                        }
-                    )
-                }
-            }
-        },
-    )
-}
 
 /**
  * Composable function which renders the bottom navigation bar with the specified items.

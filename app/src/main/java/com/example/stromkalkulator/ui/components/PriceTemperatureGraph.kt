@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -17,9 +18,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.stromkalkulator.R
-import com.example.stromkalkulator.data.models.Temperature
-import com.example.stromkalkulator.data.models.electricity.HourPrice
 import com.example.stromkalkulator.ui.theme.rememberChartStyle
+import com.example.stromkalkulator.viewmodels.HomeViewModel
 import com.patrykandpatrick.vico.compose.axis.horizontal.bottomAxis
 import com.patrykandpatrick.vico.compose.axis.vertical.endAxis
 import com.patrykandpatrick.vico.compose.axis.vertical.startAxis
@@ -63,23 +63,25 @@ private val legendTopPaddingValue = 8.dp
 private val legendPadding = dimensionsOf(top = legendTopPaddingValue)
 
 @Composable
-fun PriceTemperatureGraph(temps: List<Temperature>, prices: List<HourPrice>) {
+fun PriceTemperatureGraph(viewModel: HomeViewModel) {
+    val state = viewModel.homeStateFlow.collectAsState()
     // FIXME: Using index. This should be hours
-    var index = 0.0
-    val tempList = temps.fold(mutableListOf<ChartEntry>()) { acc, i ->
-        acc.add(entryOf(index++, i.value.toFloat()))
-        acc
-    }
-    index = 0.0
-    val priceList = prices.fold(mutableListOf<ChartEntry>()) { acc, i ->
-        acc.add(entryOf(index++, i.NOK_per_kWh.toFloat()))
-        acc
-    }
-    val chartEntryModel1 = ChartEntryModelProducer(priceList)
-    val chartEntryModel2 = ChartEntryModelProducer(tempList)
+//    var index = 0.0
+//    val tempList = temps.fold(mutableListOf<ChartEntry>()) { acc, i ->
+//        acc.add(entryOf(index++, i.value.toFloat()))
+//        acc
+//    }
+//    index = 0.0
+//    val priceList = prices.fold(mutableListOf<ChartEntry>()) { acc, i ->
+//        acc.add(entryOf(index++, i.NOK_per_kWh.toFloat()))
+//        acc
+//    }
+    val chartEntryModel1 = ChartEntryModelProducer(state.value.presentablePrices)
+    val chartEntryModel2 = ChartEntryModelProducer(state.value.presentableTemperatures)
     val composedModel = chartEntryModel1 + chartEntryModel2
 
-    Surface(Modifier
+    Surface(
+        Modifier
             .padding(25.dp)
             .fillMaxSize()
     ) {
@@ -154,7 +156,7 @@ fun GraphTestScreen() {
             verticalArrangement = Arrangement.Center,
 
         ) {
-            PriceTemperatureGraph(listOf(), listOf())
+            //PriceTemperatureGraph(listOf(), listOf())
         }
     }
 }
