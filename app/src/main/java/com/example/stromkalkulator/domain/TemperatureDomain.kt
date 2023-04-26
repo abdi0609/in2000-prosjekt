@@ -55,7 +55,7 @@ object TemperatureDomain {
     }
 
     private suspend fun fetchIfNeeded(
-        region: Region = RegionSingleton.region,
+        region: Region,
     ) = withContext(Dispatchers.IO) {
 
         if (weatherDataMap[region] == null) {

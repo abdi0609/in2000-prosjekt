@@ -16,7 +16,7 @@ import com.example.stromkalkulator.viewmodels.HomeViewModel
 @Composable
 fun HomeScreen(
     paddingValue: PaddingValues,
-    viewModel: HomeViewModel = viewModel(),
+    viewModel: HomeViewModel = viewModel(factory = HomeViewModel.Factory),
 ) {
     Scaffold(
         topBar = { TopBar(viewModel, viewModel.homeStateFlow.collectAsState().value.region) },

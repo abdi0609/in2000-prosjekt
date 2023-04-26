@@ -29,7 +29,7 @@ object ElectricityPriceDomain {
     )
 
     suspend fun getToday(
-        region: Region = RegionSingleton.region,
+        region: Region,
         calendar: Calendar = Calendar.getInstance()
     ): List<Double> {
         fetchIfNeeded(region, calendar)
@@ -37,7 +37,7 @@ object ElectricityPriceDomain {
     }
 
     suspend fun getTomorrow(
-        region: Region = RegionSingleton.region,
+        region: Region,
         calendar: Calendar = Calendar.getInstance()
     ): List<Double> {
         fetchIfNeeded(region, calendar)
@@ -45,7 +45,7 @@ object ElectricityPriceDomain {
     }
 
     suspend fun getWeek(
-        region: Region = RegionSingleton.region,
+        region: Region,
         calendar: Calendar = Calendar.getInstance()
     ): List<List<Double>> {
         fetchIfNeeded(region, calendar)
@@ -54,7 +54,7 @@ object ElectricityPriceDomain {
     }
 
     suspend fun getMonth(
-        region: Region = RegionSingleton.region,
+        region: Region,
         calendar: Calendar = Calendar.getInstance()
     ): List<List<Double>> {
         fetchIfNeeded(region, calendar)
@@ -63,23 +63,23 @@ object ElectricityPriceDomain {
     }
 
     suspend fun getWeekAverages(
-        region: Region = RegionSingleton.region,
+        region: Region,
         calendar: Calendar = Calendar.getInstance()
     ): List<Double> {
         fetchIfNeeded(region, calendar)
-        return getWeek().map { it.average() }
+        return getWeek(region).map { it.average() }
     }
 
     suspend fun getMonthAverages(
-        region: Region = RegionSingleton.region,
+        region: Region,
         calendar: Calendar = Calendar.getInstance()
     ): List<Double> {
         fetchIfNeeded(region, calendar)
-        return getMonth().map { it.average() }
+        return getMonth(region).map { it.average() }
     }
 
     private suspend fun fetchIfNeeded(
-        region: Region = RegionSingleton.region,
+        region: Region,
         calendar: Calendar = Calendar.getInstance()
     ) = withContext(Dispatchers.IO) {
 

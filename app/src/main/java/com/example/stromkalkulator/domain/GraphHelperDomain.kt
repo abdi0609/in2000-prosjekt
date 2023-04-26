@@ -7,7 +7,7 @@ import com.patrykandpatrick.vico.core.entry.FloatEntry
 object GraphHelperDomain {
 
     suspend fun getPresentableTodayPair(
-        region: Region = RegionSingleton.region
+        region: Region
     ): Pair<List<ChartEntry>, List<ChartEntry>> {
         val prices = ElectricityPriceDomain.getToday(region)
         val temps = TemperatureDomain.getToday(region)
@@ -15,7 +15,7 @@ object GraphHelperDomain {
     }
 
     suspend fun getPresentableTomorrowPair(
-        region: Region = RegionSingleton.region
+        region: Region
     ): Pair<List<ChartEntry>, List<ChartEntry>> {
         val prices = ElectricityPriceDomain.getTomorrow(region)
         val temps = TemperatureDomain.getTomorrow(region)
@@ -23,7 +23,7 @@ object GraphHelperDomain {
     }
 
     suspend fun getPresentableWeekPair(
-        region: Region = RegionSingleton.region
+        region: Region
     ): Pair<List<ChartEntry>, List<ChartEntry>> {
         val prices = ElectricityPriceDomain.getWeekAverages(region)
         val temps = TemperatureDomain.getWeek(region)
@@ -31,7 +31,7 @@ object GraphHelperDomain {
     }
 
     suspend fun getPresentableMonthPair(
-        region: Region = RegionSingleton.region
+        region: Region
     ): Pair<List<ChartEntry>, List<ChartEntry>> {
         val prices = ElectricityPriceDomain.getMonthAverages(region)
         val temps = TemperatureDomain.getMonth(region)
