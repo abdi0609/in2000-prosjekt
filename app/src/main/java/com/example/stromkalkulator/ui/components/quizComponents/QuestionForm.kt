@@ -1,5 +1,6 @@
 package com.example.stromkalkulator.ui.components.quizComponents
 
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -21,6 +22,12 @@ fun QuestionForm(quiz: Quiz, innerPadding: PaddingValues, showForm: MutableState
     val progressPointsPerQuestion = 1 / quiz.questions.size.toFloat()
     var progress by remember { mutableStateOf(0f) }
     var progressBarMoved by remember { mutableStateOf(false) }
+
+    // progress bar animation
+    val animatedProgress by animateFloatAsState(
+        targetValue = progress,
+        animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec
+    )
 
     Column(modifier = Modifier
         .padding(innerPadding)
@@ -95,7 +102,7 @@ fun QuestionForm(quiz: Quiz, innerPadding: PaddingValues, showForm: MutableState
                 Text(buttonText, fontSize = 20.sp)
             }
             // progress bar
-            ProgressBar(progress)
+            ProgressBar(animatedProgress)
         }
 
     }
