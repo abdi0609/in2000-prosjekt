@@ -19,6 +19,9 @@
     <string name="region_north">Tromsø/Northern-Norway</string>
     <string name="region_west">Bergen/Western-Norway</string>
 
+    <string name="adjust_time_of_the_day">Adjust time of the day</string>
+    <string name="adjust_interval">Adjust time-interval</string>
+
 
     <string name="cur_price">Current price</string>
     <string name="info_bubble">Displays the average kr/kwh price for the current hour. The color changes based on the price:</string>

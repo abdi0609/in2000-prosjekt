@@ -20,6 +20,8 @@
     <string name="region_north">Tromsø/Nord-Norge</string>
     <string name="region_west">Bergen/Vest-Norge</string>
 
+    <string name="adjust_time_of_the_day">Juster tidspunkt på dagen</string>
+    <string name="adjust_interval">Juster tidsintervall</string>
 
     <string name="cur_price">Nåværende pris</string>
     <string name="info_bubble">Viser den gjennomsnittlige kr/kwh prisen for den nåværende timen. Fargen endres basert på prisen:</string>
