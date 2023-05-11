@@ -1,16 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">StromKalkulator</string>
+
     <string name="home_button_text">Hjem</string>
     <string name="detailed_button_text">Detaljert</string>
     <string name="calculator_button_text">Kalkulator</string>
+
+    <string name="shower_icon">Dusj</string>
+    <string name="car_charger_icon">Bil Lader</string>
+    <string name="laundry_machine_icon">Vaskemaskin</string>
+    <string name="heater_icon">Varmeovn</string>
+
     <string name="price_chart_label_text">Pris</string>
     <string name="temperature_chart_label_text">Temperatur</string>
+
     <string name="region_east">Oslo/Øst-Norge</string>
     <string name="region_south">Kristiansand/Sør-Norge</string>
     <string name="region_middle">Trondheim/Midt-Norge</string>
     <string name="region_north">Tromsø/Nord-Norge</string>
     <string name="region_west">Bergen/Vest-Norge</string>
+
 
     <string name="cur_price">Nåværende pris</string>
     <string name="info_bubble">Viser den gjennomsnittlige kr/kwh prisen for den nåværende timen. Fargen endres basert på prisen:</string>

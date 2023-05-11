@@ -1,15 +1,24 @@
 <resources>
     <string name="app_name">ElectricityCalculator</string>
+
     <string name="home_button_text">Home</string>
     <string name="detailed_button_text">Detailed</string>
     <string name="calculator_button_text">Calculator</string>
+
+    <string name="shower_icon">Shower</string>
+    <string name="car_charger_icon">Car charger</string>
+    <string name="laundry_machine_icon">Laundry machine</string>
+    <string name="heater_icon">Heater</string>
+
     <string name="price_chart_label_text">Price</string>
     <string name="temperature_chart_label_text">Temperature</string>
+
     <string name="region_east">Oslo/Eastern-Norway</string>
     <string name="region_south">Kristiansand/Southern-Norway</string>
     <string name="region_middle">Trondheim/Middle-Norway</string>
     <string name="region_north">Tromsø/Northern-Norway</string>
     <string name="region_west">Bergen/Western-Norway</string>
+
 
     <string name="cur_price">Current price</string>
     <string name="info_bubble">Displays the average kr/kwh price for the current hour. The color changes based on the price:</string>
@@ -40,5 +49,4 @@
     <string name="next">Next</string>
     <string name="submit">Submit</string>
     <string name="take_quiz">Take the quiz</string>
-
 </resources>
