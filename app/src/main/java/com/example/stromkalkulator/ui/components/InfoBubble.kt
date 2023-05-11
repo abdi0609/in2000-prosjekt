@@ -6,11 +6,13 @@ import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import com.example.stromkalkulator.R
 import com.example.stromkalkulator.ui.theme.extendedColors
 
 // shows info for CurrentPriceBubble
@@ -30,18 +32,17 @@ fun InfoBubble() {
     if (popupControl) {
         AlertDialog(
             onDismissRequest = { popupControl = false },
-            title = { Text("Current Price") },
+            title = { Text(stringResource(R.string.cur_price)) },
             text = { Text(buildAnnotatedString {
-                append("Displays the average kr/kwh price for the current hour." +
-                        "\nThe color changes based on the price:\n")
+                append(stringResource(R.string.info_bubble) + "\n")
                 withStyle(style = SpanStyle(color = extendedColors().green, fontWeight = FontWeight.ExtraBold)) {
-                    append("Low\n")
+                    append(stringResource(R.string.low) + "\n")
                 }
                 withStyle(style = SpanStyle(color = extendedColors().yellow, fontWeight = FontWeight.ExtraBold)) {
-                    append("Medium\n")
+                    append(stringResource(R.string.medium) + "\n")
                 }
                 withStyle(style = SpanStyle(color = extendedColors().red, fontWeight = FontWeight.ExtraBold)) {
-                    append("High")
+                    append(stringResource(R.string.high) + "\n")
                 }
             })
             },

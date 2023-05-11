@@ -10,4 +10,35 @@
     <string name="region_middle">Trondheim/Middle-Norway</string>
     <string name="region_north">Tromsø/Northern-Norway</string>
     <string name="region_west">Bergen/Western-Norway</string>
+
+    <string name="cur_price">Current price</string>
+    <string name="info_bubble">Displays the average kr/kwh price for the current hour. The color changes based on the price:</string>
+    <string name="low">Low</string>
+    <string name="medium">Medium</string>
+    <string name="high">High</string>
+
+    <string name="spm1">How many people live in your home?</string>
+    <string name="spm2">Do you have an electric car?</string>
+    <string name="spm3">How long do you shower?</string>
+    <string name="spm4">Do you use a washing machine?</string>
+    <string name="spm5">Do you use a heater?</string>
+
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+
+    <string name="tip1_1">Remember to turn off the lights when you\'re not using them.</string>
+    <string name="tip1_2">Tell those you live with to turn off the lights when they are not being used.</string>
+
+    <string name="tip2_1">Charge your electric vehicle when the electricity price is lower.</string>
+
+    <string name="tip3_2">Take shorter showers.</string>
+
+    <string name="tip4_1">Make sure the washing machine is full, to avoid unnecessary usage.</string>
+
+    <string name="tip5_1">For each celcius degree you lower the temperature, you save around 5 percent on your heating expenses.</string>
+
+    <string name="next">Next</string>
+    <string name="submit">Submit</string>
+    <string name="take_quiz">Take the quiz</string>
+
 </resources>

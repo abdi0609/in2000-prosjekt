@@ -7,9 +7,11 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.stromkalkulator.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -117,7 +119,9 @@ fun QuestionForm(quiz: Quiz, innerPadding: PaddingValues, showForm: MutableState
                 }
             ) {
                 // button says submit if last question, else next
-                val buttonText = if (currentQuestionIndex < quiz.questions.size - 1) "Next" else "Submit"
+                val buttonText = if (currentQuestionIndex < quiz.questions.size - 1)
+                    stringResource(R.string.next)
+                    else stringResource(R.string.submit)
                 Text(buttonText, fontSize = 20.sp)
             }
         }

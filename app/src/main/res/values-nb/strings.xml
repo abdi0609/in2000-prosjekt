@@ -11,4 +11,34 @@
     <string name="region_middle">Trondheim/Midt-Norge</string>
     <string name="region_north">Tromsø/Nord-Norge</string>
     <string name="region_west">Bergen/Vest-Norge</string>
+
+    <string name="cur_price">Nåværende pris</string>
+    <string name="info_bubble">Viser den gjennomsnittlige kr/kwh prisen for den nåværende timen. Fargen endres basert på prisen:</string>
+    <string name="low">Lav</string>
+    <string name="medium">Middels</string>
+    <string name="high">Høy</string>
+
+    <string name="spm1">Hvor mange personer bor i din husholdning?</string>
+    <string name="spm2">Har du EL-bil?</string>
+    <string name="spm3">Hvor lenge dusjer du?</string>
+    <string name="spm4">Bruker du vaskemaskin?</string>
+    <string name="spm5">Har du panelovn/varmeovn??</string>
+
+    <string name="yes">Ja</string>
+    <string name="no">Nei</string>
+
+    <string name="tip1_1">Husk å skru av lysene når du ikke bruker dem.</string>
+    <string name="tip1_2">Påminn de andre du bor med om å skru av lysene når de ikke brukes.</string>
+
+    <string name="tip2_1">Lad EL-bilen din når strømprisen er lav.</string>
+
+    <string name="tip3_2">Ta kortere dusjer.</string>
+
+    <string name="tip4_1">Fyll opp vaskemaskinen slik at du ikke kjører maskinen unødvendig mange ganger.</string>
+
+    <string name="tip5_1">For hver grad du senker innetemperaturen, sparer du cirka 5 prosent av kostnadene til oppvarming.</string>
+
+    <string name="next">Neste</string>
+    <string name="submit">Fullfør</string>
+    <string name="take_quiz">Ta quizen</string>
 </resources>
