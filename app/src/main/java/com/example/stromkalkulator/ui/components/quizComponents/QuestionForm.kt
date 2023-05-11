@@ -2,86 +2,105 @@ package com.example.stromkalkulator.ui.components.quizComponents
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun QuestionForm(quiz: Quiz, innerPadding: PaddingValues, showForm: MutableState<Boolean>) {
     var currentQuestionIndex by remember { mutableStateOf(0) }
     val question = quiz.questions[currentQuestionIndex]
 
-    val answer = remember{ mutableStateOf("") }
+    var answer by remember{ mutableStateOf("") }
 
     // progress bar
     val progressPointsPerQuestion = 1 / quiz.questions.size.toFloat()
     var progress by remember { mutableStateOf(0f) }
     var progressBarMoved by remember { mutableStateOf(false) }
 
-    // progress bar animation
-    val animatedProgress by animateFloatAsState(
-        targetValue = progress,
-        animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec
-    )
-
-    Column(modifier = Modifier
-        .padding(innerPadding)
-        .fillMaxSize(),
-        verticalArrangement = Arrangement.SpaceBetween,
-        horizontalAlignment = Alignment.CenterHorizontally) {
-        Column(modifier = Modifier
-            .fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally) {
-            // question text
-            Text(question.question, fontSize = 25.sp, fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth())
-
-            // show answering alternatives
-            question.alternatives.keys.forEach {
-                // if selected button
-                if (answer.value == it) {
-                    Button(
-                        onClick = {
-                            // save answer for this question
-                            answer.value = it
-                        },
-                        colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.secondary)
-                    ) {
-                        Text(it)
-                    }
+    Box (contentAlignment = Alignment.Center, modifier = Modifier.padding(innerPadding)){
+        Column(
+            modifier = Modifier
+                .padding(30.dp)
+                .fillMaxSize()
+                .align(Alignment.TopCenter),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+            Card(
+                modifier = Modifier.fillMaxWidth().height(100.dp).padding(bottom = 20.dp).align(Alignment.CenterHorizontally)
+            ) {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = question.question,
+                        modifier = Modifier.padding(5.dp),
+                        fontSize = 20.sp
+                    )
                 }
-                // not selected button
-                else {
-                    Button(
-                        onClick = {
-                            // save answer for this question
-                            answer.value = it
-                            // increase progress bar if first alternative selected
-                            if (!progressBarMoved) {
-                                progress += progressPointsPerQuestion
-                                progressBarMoved = true
+            }
+            question.alternatives.keys.chunked(2).forEach { row ->
+                Row(
+                    modifier = Modifier.fillMaxWidth().height(100.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    row.forEach { questionValue ->
+                        val color =
+                            if (answer == questionValue) CardDefaults.cardColors(MaterialTheme.colorScheme.secondary) else CardDefaults.cardColors(
+                                MaterialTheme.colorScheme.primary
+                            )
+
+                        Card(
+                            modifier = Modifier.padding(8.dp).size(150.dp),
+                            shape = RoundedCornerShape(8.dp),
+                            colors = color,
+                            onClick = {
+                                // save answer for this question
+                                answer = questionValue
+                                // increase progress bar if first alternative selected
+                                if (!progressBarMoved) {
+                                    progress += progressPointsPerQuestion
+                                    progressBarMoved = true
+                                }
+                            },
+                        ) {
+                            Column(
+                                modifier = Modifier.fillMaxSize(),
+                                verticalArrangement = Arrangement.Center,
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Text(
+                                    text = questionValue,
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 20.sp
+                                )
                             }
                         }
-                    ) {
-                        Text(it)
                     }
                 }
-                Spacer(modifier = Modifier.height(10.dp))
             }
         }
-        Box(contentAlignment = Alignment.Center) {
+        Box(
+            modifier = Modifier.align(Alignment.BottomCenter).padding(bottom = 20.dp),
+            contentAlignment = Alignment.Center
+
+        ) {
             // next button
             TextButton(
                 modifier = Modifier.offset(y = (-30).dp),
                 enabled = progressBarMoved,
                 onClick = {
                     // save answer
-                    quiz.answer(currentQuestionIndex, answer.value)
+                    quiz.answer(currentQuestionIndex, answer)
                     // next question
                     if (currentQuestionIndex < quiz.questions.size - 1) {
                         currentQuestionIndex++
@@ -92,18 +111,16 @@ fun QuestionForm(quiz: Quiz, innerPadding: PaddingValues, showForm: MutableState
                         showForm.value = false
                     }
                     // reset selected answer
-                    answer.value = ""
+                    answer = ""
                     // progress bar ready for new increase
                     progressBarMoved = false
-
-                }) {
+                }
+            ) {
                 // button says submit if last question, else next
                 val buttonText = if (currentQuestionIndex < quiz.questions.size - 1) "Next" else "Submit"
                 Text(buttonText, fontSize = 20.sp)
             }
-            // progress bar
-            ProgressBar(animatedProgress)
         }
-
     }
 }
+
