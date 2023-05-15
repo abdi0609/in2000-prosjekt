@@ -6,14 +6,6 @@ import com.patrykandpatrick.vico.core.entry.FloatEntry
 
 object GraphHelperDomain {
 
-    suspend fun getPresentableTodayPair(
-        region: Region
-    ): Pair<List<ChartEntry>, List<ChartEntry>> {
-        val prices = ElectricityPriceDomain.getToday(region)
-        val temps = TemperatureDomain.getToday(region)
-        return listsToChartListPair(prices, temps)
-    }
-
     suspend fun getPresentableTomorrowPair(
         region: Region
     ): Pair<List<ChartEntry>, List<ChartEntry>> {

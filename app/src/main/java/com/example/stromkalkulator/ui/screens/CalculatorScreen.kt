@@ -1,9 +1,7 @@
 package com.example.stromkalkulator.ui.screens
 
-import android.util.Log
 import androidx.compose.animation.*
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -24,8 +22,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.stromkalkulator.R
 import com.example.stromkalkulator.ui.components.TopBar
 import com.example.stromkalkulator.viewmodels.CalculatorViewModel
-import com.example.stromkalkulator.viewmodels.DetailedViewModel
-import com.example.stromkalkulator.viewmodels.HomeViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -139,7 +135,10 @@ fun InfoCard(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CalculatorScreen(paddingValue: PaddingValues, viewModel: CalculatorViewModel = viewModel()) {
+fun CalculatorScreen(
+    paddingValue: PaddingValues,
+    viewModel: CalculatorViewModel = viewModel(factory = CalculatorViewModel.Factory),
+) {
     Scaffold(
         topBar = { TopBar(viewModel, viewModel.calculatorStateFlow.collectAsState().value.region) },
         content = { CalculatorView(it, viewModel) },

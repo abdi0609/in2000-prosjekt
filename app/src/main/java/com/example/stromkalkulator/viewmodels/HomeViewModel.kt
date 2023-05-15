@@ -26,9 +26,8 @@ class HomeViewModel(
     val homeStateFlow: StateFlow<HomeUiState> = homeState.asStateFlow()
 
     init {
-        updateTempsAndPrices()
         updateRegion()
-
+        updateTempsAndPrices()
     }
 
     override fun setRegion(region: Region) {
@@ -43,13 +42,13 @@ class HomeViewModel(
     override fun updateTempsAndPrices() {
         // TODO: fix plz
         viewModelScope.launch {
-            val (price,temp) = GraphHelperDomain.getPresentableMonthPair(
+            val (price,temp) = GraphHelperDomain.getPresentableTomorrowPair(
                 homeState.value.region
             )
             println("\n\n$price\n$temp\n\n")
             homeState.update {
                 it.copy(
-                    currentPrice = ElectricityPriceDomain.getToday(homeState.value.region)[0],
+                    currentPrice = ElectricityPriceDomain.getCurrentHour(homeState.value.region),
                     presentablePrices = price,
                     presentableTemperatures = temp
                 )

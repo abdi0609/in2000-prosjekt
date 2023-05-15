@@ -1,23 +1,24 @@
 package com.example.stromkalkulator.domain
 
+import android.util.Log
 import com.example.stromkalkulator.data.Region
 import com.example.stromkalkulator.data.models.electricity.HourPrice
 import com.example.stromkalkulator.data.repositories.ElectricityPrice
-import io.ktor.util.date.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.util.Calendar
+import java.util.Date
 
 object ElectricityPriceDomain {
 
     // TODO make tests to make sure list is either empty, or has 31 elements
 
-    private val lastUpdatedMap: MutableMap<Region, Long> = mutableMapOf(
-        Region.NO1 to 0,
-        Region.NO2 to 0,
-        Region.NO3 to 0,
-        Region.NO4 to 0,
-        Region.NO5 to 0
+    private val lastUpdatedMap: MutableMap<Region, Date?> = mutableMapOf(
+        Region.NO1 to null,
+        Region.NO2 to null,
+        Region.NO3 to null,
+        Region.NO4 to null,
+        Region.NO5 to null
     )
 
     private val regionMap: MutableMap<Region, List<List<HourPrice>>> = mutableMapOf(
@@ -28,12 +29,35 @@ object ElectricityPriceDomain {
         Region.NO5 to listOf(),
     )
 
+    fun reset() {
+        Region.values().forEach { region ->
+            lastUpdatedMap[region] = null
+            regionMap[region] = listOf()
+        }
+    }
+
+
+    suspend fun getCurrentHour(
+        region: Region,
+        calendar: Calendar = Calendar.getInstance()
+    ): Double {
+        fetchIfNeeded(region, calendar)
+        return regionMap[region]
+            ?.getOrNull(29)
+            ?.getOrNull(calendar.get(Calendar.HOUR_OF_DAY)-1)
+            ?.NOK_per_kWh
+            ?: 0.0
+    }
+
     suspend fun getToday(
         region: Region,
         calendar: Calendar = Calendar.getInstance()
     ): List<Double> {
         fetchIfNeeded(region, calendar)
-        return regionMap[region]!![29].map { hp -> hp.NOK_per_kWh }
+        return regionMap[region]
+            ?.getOrNull(29)
+            ?.map { hp -> hp.NOK_per_kWh }
+            ?: listOf()
     }
 
     suspend fun getTomorrow(
@@ -41,7 +65,10 @@ object ElectricityPriceDomain {
         calendar: Calendar = Calendar.getInstance()
     ): List<Double> {
         fetchIfNeeded(region, calendar)
-        return regionMap[region]!![30].map { hp -> hp.NOK_per_kWh }
+        return regionMap[region]
+            ?.getOrNull(30)
+            ?.map { hp -> hp.NOK_per_kWh }
+            ?: listOf()
     }
 
     suspend fun getWeek(
@@ -49,8 +76,10 @@ object ElectricityPriceDomain {
         calendar: Calendar = Calendar.getInstance()
     ): List<List<Double>> {
         fetchIfNeeded(region, calendar)
-        return regionMap[region]!!.subList(30-7,30)
-            .map { list -> list.map { hp -> hp.NOK_per_kWh } }
+        return regionMap[region]
+            ?.subList(30-7,30)
+            ?.map { list -> list.map { hp -> hp.NOK_per_kWh } }
+            ?: listOf()
     }
 
     suspend fun getMonth(
@@ -58,8 +87,10 @@ object ElectricityPriceDomain {
         calendar: Calendar = Calendar.getInstance()
     ): List<List<Double>> {
         fetchIfNeeded(region, calendar)
-        return regionMap[region]!!.subList(0,30)
-            .map { list -> list.map { hp -> hp.NOK_per_kWh } }
+        return regionMap[region]
+            ?.subList(0,30)
+            ?.map { list -> list.map { hp -> hp.NOK_per_kWh } }
+            ?: listOf()
     }
 
     suspend fun getWeekAverages(
@@ -82,13 +113,15 @@ object ElectricityPriceDomain {
         region: Region,
         calendar: Calendar = Calendar.getInstance()
     ) = withContext(Dispatchers.IO) {
-
         if (regionMap[region]?.isEmpty() == true) {
-            regionMap[region] = fetchDayRange(30,region)
+            lastUpdatedMap[region] = calendar.time
+            regionMap[region] = fetchDayRange(29,region)
             return@withContext
         }
-        if ((lastUpdatedMap[region] ?: Long.MAX_VALUE) - calendar.get(Calendar.MILLISECOND) > 1000 * 60 * 30) {
-            regionMap[region] = fetchDayRange(30,region)
+        val tomorrowCalendar = calendar.also { it.add(Calendar.HOUR_OF_DAY, 1) }
+        if (lastUpdatedMap[region]!! > tomorrowCalendar.time) {
+            lastUpdatedMap[region] = calendar.time
+            regionMap[region] = fetchDayRange(29, region)
             return@withContext
         }
     }
@@ -99,19 +132,21 @@ object ElectricityPriceDomain {
         calendar: Calendar = Calendar.getInstance(),
         containsTomorrow: Boolean = true
     ): List<List<HourPrice>> {
+        Log.v("fetch","Fetchin eprice for $region, $calendar")
 
         val daysForward = if (containsTomorrow) daysBack+1 else daysBack
         calendar.add(Calendar.DAY_OF_MONTH,-daysBack)
-        lastUpdatedMap[region] = getTimeMillis()
+        // TODO: Fixme
+        lastUpdatedMap[region] = calendar.time
 
         return try {
-            (0 until daysForward).fold(emptyList()) { acc, _ ->
-                (acc + listOf( ElectricityPrice.getDay(region, calendar)))
+            (0 .. daysForward).fold(emptyList()) { accumulator, _ ->
+                (accumulator + listOf(ElectricityPrice.getDay(region, calendar)))
                     .also { calendar.add(Calendar.DAY_OF_MONTH, 1) }
             }
         } catch (e: Exception) {
             e.printStackTrace()
-            emptyList()
+            List(30) { emptyList() }
         }
     }
 

@@ -65,17 +65,6 @@ private val legendPadding = dimensionsOf(top = legendTopPaddingValue)
 @Composable
 fun PriceTemperatureGraph(viewModel: HomeViewModel) {
     val state = viewModel.homeStateFlow.collectAsState()
-    // FIXME: Using index. This should be hours
-//    var index = 0.0
-//    val tempList = temps.fold(mutableListOf<ChartEntry>()) { acc, i ->
-//        acc.add(entryOf(index++, i.value.toFloat()))
-//        acc
-//    }
-//    index = 0.0
-//    val priceList = prices.fold(mutableListOf<ChartEntry>()) { acc, i ->
-//        acc.add(entryOf(index++, i.NOK_per_kWh.toFloat()))
-//        acc
-//    }
     val chartEntryModel1 = ChartEntryModelProducer(state.value.presentablePrices)
     val chartEntryModel2 = ChartEntryModelProducer(state.value.presentableTemperatures)
     val composedModel = chartEntryModel1 + chartEntryModel2
