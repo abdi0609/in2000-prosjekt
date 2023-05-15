@@ -22,6 +22,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.stromkalkulator.R
 import com.example.stromkalkulator.ui.components.TopBar
 import com.example.stromkalkulator.viewmodels.CalculatorViewModel
+import java.math.RoundingMode
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -39,11 +40,8 @@ fun InfoCard(
         val rotationState by animateFloatAsState( targetValue = if (expanded) 180f else 0f )
         val sliderPointerFraction = (standard.toFloat()/maks)
         var pointerValue: Float by remember { mutableStateOf(sliderPointerFraction) }
-        var calculatedPriceReal = { eprice: Double, ocost: Double, pval: Float ->
-            eprice * ocost * pval
-        }
-        var calculatedPrice by remember {
-            mutableStateOf(electricityPrice * objectCost * pointerValue * maks)
+        val calculatedPriceReal = { eprice: Double, ocost: Double, pval: Float ->
+            (eprice * ocost) * pval / 60
         }
 
         Card(
@@ -158,8 +156,9 @@ fun CalculatorView(
     val valueRange: ClosedFloatingPointRange<Float> = 0f..1f
     val defaultValue = (state.value.currentHour / 23.0).toFloat()
     var value: Float by remember { mutableStateOf(defaultValue) }
-    var chosenElectricityPrice: Double = try {
-        state.value.pricesToday[(value * 23.0).toInt()]
+    val chosenElectricityPrice: Double = try {
+        state.value.pricesToday[(value * 23.0).toBigDecimal()
+            .setScale(1, RoundingMode.HALF_UP).toInt()]
     } catch (e: Exception) {
         0.00
     }
@@ -179,7 +178,7 @@ fun CalculatorView(
                     standard = 30,
                     maks = 60,
                     electricityPrice = chosenElectricityPrice,
-                    objectCost = 0.56,
+                    objectCost = 33.6,
                     steps = 30,
                     stringResource = R.string.shower_icon
                 )
@@ -188,7 +187,7 @@ fun CalculatorView(
                     standard = 360,
                     maks = 1440,
                     electricityPrice = chosenElectricityPrice,
-                    objectCost = 2.3/60.0,
+                    objectCost = 1.0,
                     steps = 24,
                     stringResource = R.string.car_charger_icon)
                 InfoCard(
@@ -196,7 +195,7 @@ fun CalculatorView(
                     standard = 120,
                     maks = 360,
                     electricityPrice = chosenElectricityPrice,
-                    objectCost =  0.17,
+                    objectCost =  22.0,
                     steps = 12,
                     stringResource = R.string.laundry_machine_icon
                 )
@@ -205,7 +204,7 @@ fun CalculatorView(
                     standard = 360,
                     maks = 1440,
                     electricityPrice = chosenElectricityPrice,
-                    objectCost = 0.37,
+                    objectCost = 1.0,
                     steps = 24,
                     stringResource = R.string.heater_icon)
                 Spacer(modifier = Modifier
