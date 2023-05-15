@@ -30,7 +30,8 @@ fun DetailedScreen(innerPadding: PaddingValues) {
             linkedMapOf(stringResource(R.string.yes) to stringResource(R.string.tip2_1),
                 stringResource(R.string.no) to "")
         ),
-        Question(stringResource(R.string.spm3),
+        Question(
+            stringResource(R.string.spm3),
             linkedMapOf(
                 "0-5 min" to "",
                 "5-10 min" to "",
@@ -58,11 +59,15 @@ fun DetailedScreen(innerPadding: PaddingValues) {
             TipsColumn(quiz, innerPadding)
         // show "take quiz" button
         else
-            Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally) {
-                Button(modifier = Modifier.padding(innerPadding), onClick = {
-                    showQuestionForm.value = true
-                }) {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Button(
+                    modifier = Modifier.padding(innerPadding),
+                    onClick = { showQuestionForm.value = true }
+                ) {
                     Text(stringResource(R.string.take_quiz))
                 }
             }

@@ -15,8 +15,8 @@ fun TipCard(tip: String) {
     Card(modifier = Modifier
         .fillMaxWidth()
         .height(120.dp)
-        .padding(20.dp))
-        {
+        .padding(start = 20.dp, end = 20.dp, top = 10.dp, bottom = 10.dp, )
+    ) {
         Text(tip, fontSize = 20.sp, modifier = Modifier.padding(5.dp))
     }
 }

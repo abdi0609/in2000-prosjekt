@@ -20,7 +20,11 @@ fun TipsColumn(quiz: Quiz, innerPadding: PaddingValues) {
         horizontalAlignment = Alignment.CenterHorizontally) {
         // title
         item {
-            Text("Tips", fontWeight = FontWeight.Bold, fontSize = 40.sp)
+            Text(
+                text = "Tips",
+                fontWeight = FontWeight.Bold,
+                fontSize = 40.sp,
+                modifier = Modifier.padding(top = 15.dp, bottom = 10.dp))
         }
         // tips
         itemsIndexed(quiz.questions) {index, _ ->
@@ -29,7 +33,6 @@ fun TipsColumn(quiz: Quiz, innerPadding: PaddingValues) {
             // if tip is available, show tip
             if (tip != null && tip != "") {
                 TipCard(tip)
-                Spacer(modifier = Modifier.height(20.dp))
             }
 
         }
