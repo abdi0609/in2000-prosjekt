@@ -12,11 +12,19 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun TipCard(tip: String) {
-    Card(modifier = Modifier
+    Card(
+        modifier = Modifier
         .fillMaxWidth()
-        .height(120.dp)
-        .padding(start = 20.dp, end = 20.dp, top = 10.dp, bottom = 10.dp, )
+        .height(130.dp)
+        .padding(
+            start = 20.dp, end = 20.dp,
+            top = 10.dp, bottom = 10.dp
+        )
     ) {
-        Text(tip, fontSize = 20.sp, modifier = Modifier.padding(5.dp))
+        Text(
+            text = tip,
+            fontSize = 20.sp,
+            modifier = Modifier.padding(5.dp)
+        )
     }
 }

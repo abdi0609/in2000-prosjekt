@@ -15,9 +15,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun TipsColumn(quiz: Quiz, innerPadding: PaddingValues) {
-    LazyColumn(modifier = Modifier.padding(innerPadding),
-        horizontalAlignment = Alignment.CenterHorizontally) {
+fun TipsColumn(
+    quiz: Quiz,
+    innerPadding: PaddingValues
+) {
+    LazyColumn(
+        modifier = Modifier.padding(innerPadding),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         // title
         item {
             Text(
