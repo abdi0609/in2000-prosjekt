@@ -1,9 +1,7 @@
 package com.example.stromkalkulator.data.repositories
 
 import com.example.stromkalkulator.data.Region
-import com.example.stromkalkulator.data.models.electricity.Day
 import com.example.stromkalkulator.data.models.electricity.HourPrice
-import com.example.stromkalkulator.data.models.electricity.Week
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.engine.cio.*
@@ -11,7 +9,6 @@ import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
 import io.ktor.serialization.kotlinx.json.*
 import java.util.Calendar
-import kotlin.jvm.Throws
 
 
 @Suppress("SameReturnValue")

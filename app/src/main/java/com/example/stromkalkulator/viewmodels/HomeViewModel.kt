@@ -10,7 +10,7 @@ import com.example.stromkalkulator.StromKalkulatorApplication
 import com.example.stromkalkulator.data.Region
 import com.example.stromkalkulator.domain.ElectricityPriceDomain
 import com.example.stromkalkulator.domain.GraphHelperDomain
-import com.example.stromkalkulator.domain.RegionRepository
+import com.example.stromkalkulator.domain.RegionDomain
 import com.patrykandpatrick.vico.core.entry.ChartEntry
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
-    private val regionRepository: RegionRepository
+    private val regionDomain: RegionDomain
 ) : GenericViewModel() {
 
     private var homeState = MutableStateFlow(HomeUiState())
@@ -32,7 +32,7 @@ class HomeViewModel(
 
     override fun setRegion(region: Region) {
         viewModelScope.launch {
-            regionRepository.setRegion(region)
+            regionDomain.setRegion(region)
             homeState.update {
                 it.copy(region = region)
             }
@@ -58,7 +58,7 @@ class HomeViewModel(
 
     private fun updateRegion() {
         viewModelScope.launch {
-            regionRepository.getRegion().collect { region ->
+            regionDomain.getRegion().collect { region ->
                 homeState.update { state ->
                     Log.v("HomeViewModel", "Region: $region")
                     state.copy(region = region)
@@ -72,7 +72,7 @@ class HomeViewModel(
             initializer {
                 val application = (this[APPLICATION_KEY] as StromKalkulatorApplication)
                 HomeViewModel(
-                    application.regionRepository
+                    application.regionDomain
                 )
 
             }

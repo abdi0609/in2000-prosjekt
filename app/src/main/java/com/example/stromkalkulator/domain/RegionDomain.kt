@@ -1,6 +1,5 @@
 package com.example.stromkalkulator.domain
 
-import android.content.Context
 import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -10,7 +9,7 @@ import com.example.stromkalkulator.data.Region
 import kotlinx.coroutines.flow.*
 
 // TODO: Move to Region enum as companion object?
-class RegionRepository(
+class RegionDomain(
     private val dataStore: DataStore<Preferences>
 ) {
 

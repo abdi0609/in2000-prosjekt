@@ -8,7 +8,7 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.stromkalkulator.StromKalkulatorApplication
 import com.example.stromkalkulator.data.Region
 import com.example.stromkalkulator.domain.ElectricityPriceDomain
-import com.example.stromkalkulator.domain.RegionRepository
+import com.example.stromkalkulator.domain.RegionDomain
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 import java.util.*
 
 class CalculatorViewModel(
-    private val regionRepository: RegionRepository
+    private val regionDomain: RegionDomain
 ) : GenericViewModel() {
 
     private var calculatorState = MutableStateFlow<CalculatorUiState>(CalculatorUiState())
@@ -54,7 +54,7 @@ class CalculatorViewModel(
     }
     override fun setRegion(region: Region) {
         viewModelScope.launch {
-            regionRepository.setRegion(region)
+            regionDomain.setRegion(region)
             calculatorState.update {
                 it.copy(region = region)
             }
@@ -63,7 +63,7 @@ class CalculatorViewModel(
 
     private fun updateRegion() {
         viewModelScope.launch {
-            regionRepository.getRegion().collect { region ->
+            regionDomain.getRegion().collect { region ->
                 calculatorState.update { state ->
                     Log.v("HomeViewModel", "Region: $region")
                     state.copy(region = region)
@@ -83,7 +83,7 @@ class CalculatorViewModel(
             initializer {
                 val application = (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as StromKalkulatorApplication)
                 CalculatorViewModel(
-                    application.regionRepository
+                    application.regionDomain
                 )
 
             }
