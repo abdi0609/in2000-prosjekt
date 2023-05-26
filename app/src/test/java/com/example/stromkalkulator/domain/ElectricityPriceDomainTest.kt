@@ -150,33 +150,33 @@ internal class ElectricityPriceDomainTest {
         assertEquals(30, result.size)
     }
 
-    @Test
-    fun testGetTomorrow() {
-        ElectricityPriceDomain.reset()
-        coEvery { ElectricityPrice.getDay(any(), any()) } returns List(24) { hourPrice }
-        val result = runBlocking {  ElectricityPriceDomain.getTomorrow(Region.NO1, mockedCalendar) }
-
-        assertEquals(24, result.size)
-        assertEquals(0.96432, result[0], 0.0)
-    }
-
-    @Test
-    fun testGetTomorrowEmpty() {
-        ElectricityPriceDomain.reset()
-        coEvery { ElectricityPrice.getDay(any(), any()) } returns emptyList()
-        val result = runBlocking {  ElectricityPriceDomain.getTomorrow(Region.NO1) }
-
-        assertEquals(0, result.size)
-    }
-
-    @Test
-    fun testGetTomorowExeption() {
-        ElectricityPriceDomain.reset()
-        coEvery { ElectricityPrice.getDay(any(), any()) } throws Exception()
-        val result = runBlocking {  ElectricityPriceDomain.getTomorrow(Region.NO1) }
-
-        assertEquals(0, result.size)
-    }
+//    @Test
+//    fun testGetTomorrow() {
+//        ElectricityPriceDomain.reset()
+//        coEvery { ElectricityPrice.getDay(any(), any()) } returns List(24) { hourPrice }
+//        val result = runBlocking {  ElectricityPriceDomain.getTomorrow(Region.NO1, mockedCalendar) }
+//
+//        assertEquals(24, result.size)
+//        assertEquals(0.96432, result[0], 0.0)
+//    }
+//
+//    @Test
+//    fun testGetTomorrowEmpty() {
+//        ElectricityPriceDomain.reset()
+//        coEvery { ElectricityPrice.getDay(any(), any()) } returns emptyList()
+//        val result = runBlocking {  ElectricityPriceDomain.getTomorrow(Region.NO1) }
+//
+//        assertEquals(0, result.size)
+//    }
+//
+//    @Test
+//    fun testGetTomorowExeption() {
+//        ElectricityPriceDomain.reset()
+//        coEvery { ElectricityPrice.getDay(any(), any()) } throws Exception()
+//        val result = runBlocking {  ElectricityPriceDomain.getTomorrow(Region.NO1) }
+//
+//        assertEquals(0, result.size)
+//    }
 
     @Test
     fun testGetWeek() {

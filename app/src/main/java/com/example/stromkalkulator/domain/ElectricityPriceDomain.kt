@@ -186,7 +186,7 @@ object ElectricityPriceDomain {
         val tomorrowCalendar = calendar.also { it.add(Calendar.HOUR_OF_DAY, 1) }
         if (lastUpdatedMap[region]!! > tomorrowCalendar.time) {
             lastUpdatedMap[region] = calendar.time
-            regionMap[region] = fetchDayRange(29, region)
+            regionMap[region] = fetchDayRange(29, region, true)
             return@withContext
         }
     }
@@ -202,10 +202,10 @@ object ElectricityPriceDomain {
     private suspend fun fetchDayRange(
         daysBack: Int,
         region: Region,
+        containsTomorrow: Boolean = false,
         calendar: Calendar = Calendar.getInstance(),
-        containsTomorrow: Boolean = false
     ): List<List<HourPrice>> {
-        Log.v("fetch","Fetchin eprice for $region, $calendar")
+//        Log.v("fetch","Fetchin eprice for $region, $calendar")
 
         val daysForward = if (containsTomorrow) daysBack+1 else daysBack
         calendar.add(Calendar.DAY_OF_MONTH,-daysBack)

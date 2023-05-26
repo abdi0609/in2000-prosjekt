@@ -127,6 +127,7 @@ object TemperatureDomain {
         region: Region,
         calendar: Calendar = Calendar.getInstance(),
     ): List<List<Double>> {
+//        Log.v("fetch","Fetchin temp for $region, $calendar")
         lastUpdatedMap[region] = calendar.time
         return try {
             val x = TemperatureRepository.getPast(region,30,1,calendar)
