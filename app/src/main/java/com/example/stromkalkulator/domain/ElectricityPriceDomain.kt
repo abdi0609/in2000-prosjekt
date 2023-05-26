@@ -9,6 +9,12 @@ import kotlinx.coroutines.withContext
 import java.util.Calendar
 import java.util.Date
 
+/**
+ * Object responisble for caching the fetched data from "hvakosterstrommen.no"
+ *
+ * @property lastUpdatedMap Map of last updated time for each region
+ * @property regionMap Map of lists of HourPrices for each region
+ */
 object ElectricityPriceDomain {
 
     // TODO make tests to make sure list is either empty, or has 31 elements
@@ -29,6 +35,10 @@ object ElectricityPriceDomain {
         Region.NO5 to listOf(),
     )
 
+    /**
+     * Resets the cache
+     * Used by unit tests
+     */
     fun reset() {
         Region.values().forEach { region ->
             lastUpdatedMap[region] = null
@@ -37,6 +47,13 @@ object ElectricityPriceDomain {
     }
 
 
+    /**
+     * Gets the electricity price for the current hour
+     * Fetches the data from the repository if needed
+     *
+     * @param region Region to fetch data for
+     * @param calendar Calendar to fetch data for
+     */
     suspend fun getCurrentHour(
         region: Region,
         calendar: Calendar = Calendar.getInstance()
@@ -49,6 +66,13 @@ object ElectricityPriceDomain {
             ?: 0.0
     }
 
+    /**
+     * Gets the electricity price for today
+     * Fetches the data from the repository if needed
+     *
+     * @param region Region to fetch data for
+     * @param calendar Calendar to fetch data for
+     */
     suspend fun getToday(
         region: Region,
         calendar: Calendar = Calendar.getInstance()
@@ -60,6 +84,13 @@ object ElectricityPriceDomain {
             ?: listOf()
     }
 
+    /**
+     * Gets the electricity price for tomorrow
+     * Fetches the data from the repository if needed
+     *
+     * @param region Region to fetch data for
+     * @param calendar Calendar to fetch data for
+     */
     suspend fun getTomorrow(
         region: Region,
         calendar: Calendar = Calendar.getInstance()
@@ -71,6 +102,13 @@ object ElectricityPriceDomain {
             ?: listOf()
     }
 
+    /**
+     * Gets the electricity price for the past week
+     * Fetches the data from the repository if needed
+     *
+     * @param region Region to fetch data for
+     * @param calendar Calendar to fetch data for
+     */
     suspend fun getWeek(
         region: Region,
         calendar: Calendar = Calendar.getInstance()
@@ -82,6 +120,13 @@ object ElectricityPriceDomain {
             ?: listOf()
     }
 
+    /**
+     * Gets the electricity price for the past month
+     * Fetches the data from the repository if needed
+     *
+     * @param region Region to fetch data for
+     * @param calendar Calendar to fetch data for
+     */
     suspend fun getMonth(
         region: Region,
         calendar: Calendar = Calendar.getInstance()
@@ -93,6 +138,13 @@ object ElectricityPriceDomain {
             ?: listOf()
     }
 
+    /**
+     * Gets the average electricity price for the past week
+     * Fetches the data from the repository if needed
+     *
+     * @param region Region to fetch data for
+     * @param calendar Calendar to fetch data for
+     */
     suspend fun getWeekAverages(
         region: Region,
         calendar: Calendar = Calendar.getInstance()
@@ -101,6 +153,13 @@ object ElectricityPriceDomain {
         return getWeek(region).map { it.average() }
     }
 
+    /**
+     * Gets the average electricity price for the past month
+     * Fetches the data from the repository if needed
+     *
+     * @param region Region to fetch data for
+     * @param calendar Calendar to fetch data for
+     */
     suspend fun getMonthAverages(
         region: Region,
         calendar: Calendar = Calendar.getInstance()
@@ -109,6 +168,12 @@ object ElectricityPriceDomain {
         return getMonth(region).map { it.average() }
     }
 
+    /**
+     * Fetches data from the repository if needed
+     *
+     * @param region Region to fetch data for
+     * @param calendar Calendar to fetch data for
+     */
     private suspend fun fetchIfNeeded(
         region: Region,
         calendar: Calendar = Calendar.getInstance()
@@ -126,6 +191,14 @@ object ElectricityPriceDomain {
         }
     }
 
+    /**
+     * Fetches data from the repository
+     *
+     * @param daysBack Number of days to fetch
+     * @param region Region to fetch data for
+     * @param calendar Calendar to fetch data for
+     * @param containsTomorrow Whether the data should contain tomorrow
+     */
     private suspend fun fetchDayRange(
         daysBack: Int,
         region: Region,

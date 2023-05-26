@@ -16,6 +16,11 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.*
 
+/**
+ * This ViewModel class acts as a bridge between the CalculatorScreen and the domain layer.
+ *
+ * @param regionDomain The RegionDomain to use.
+ */
 class CalculatorViewModel(
     private val regionDomain: RegionDomain
 ) : GenericViewModel() {
@@ -29,6 +34,9 @@ class CalculatorViewModel(
         updateTodaysPrices()
     }
 
+    /**
+     * Updates the calculatorState with the current prices for the day.
+     */
     private fun updateTodaysPrices() {
         viewModelScope.launch {
             calculatorState.update { state ->
@@ -42,6 +50,9 @@ class CalculatorViewModel(
         }
     }
 
+    /**
+     * Updates the calculatorState with the current hour.
+     */
     private fun updateCurrentHour() {
         val calendar = Calendar.getInstance()
         viewModelScope.launch {
@@ -52,6 +63,12 @@ class CalculatorViewModel(
             }
         }
     }
+
+    /**
+     * Sets the region in the domain layer and updates the calculatorState.
+     *
+     * @param region The region to set.
+     */
     override fun setRegion(region: Region) {
         viewModelScope.launch {
             regionDomain.setRegion(region)
@@ -61,6 +78,9 @@ class CalculatorViewModel(
         }
     }
 
+    /**
+     * Updates the calculatorState with the current region.
+     */
     private fun updateRegion() {
         viewModelScope.launch {
             regionDomain.getRegion().collect { region ->
@@ -73,11 +93,18 @@ class CalculatorViewModel(
     }
 
 
+    /**
+     * Updates the calculatorState with the current region, temperatures and prices.
+     */
     override fun updateTempsAndPrices() {
         updateRegion()
         updateCurrentHour()
         updateTodaysPrices()
     }
+
+    /**
+     * Factory for the CalculatorViewModel.
+     */
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {

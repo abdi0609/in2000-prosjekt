@@ -11,12 +11,24 @@ import io.ktor.client.request.*
 import io.ktor.serialization.kotlinx.json.*
 import java.util.Calendar
 
-
+/**
+ * Object responisble for fetching data from "hvakosterstrommen.no"
+ *
+ * @property client Simple HttpClient setup for fetching json
+ */
 @Suppress("SameReturnValue")
 object ElectricityPrice {
     private val client: HttpClient = HttpClient(CIO) { install(ContentNegotiation) { json() } }
 
     /**
+     * Fetches the electricity price for a single day
+     *
+     * @param region The requested region
+     * @param calendar Calendar input to specify requested time
+     * @param localClient Optional HttpClient override (used by unit-tests).
+     *
+     * @return A list of HourPrices representing the price for each hour of the current day
+     *
      * @throws NoTransformationFoundException
      * @throws DoubleReceiveException
      */

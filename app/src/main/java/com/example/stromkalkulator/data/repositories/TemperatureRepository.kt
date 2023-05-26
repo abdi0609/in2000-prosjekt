@@ -18,6 +18,13 @@ import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import java.util.Calendar
 
+/**
+ * Object responisble for fetching data from FROST and location forecast 2.0.
+ *
+ *
+ * @property httpClient Simple HttpClient setup for fetching json
+ * @property frostClient Advanced HttpClient setup including the FROST api-key
+ */
 object TemperatureRepository {
     private val httpClient: HttpClient = HttpClient(CIO) { install(ContentNegotiation) { json() } }
     private val frostClient: HttpClient = HttpClient(CIO){
@@ -40,12 +47,16 @@ object TemperatureRepository {
         }
     }
 
-    // https://frost.met.no/sources/v0.jsonld?elements=air_temperature&geometry=nearest(POINT(10.75%2059.91))&nearestmaxcount=1
-
     private const val baseUrl = "https://api.met.no/weatherapi/locationforecast/2.0/compact"
     private const val frostBase = "https://frost.met.no/observations/v0.jsonld?"
     private const val apiKey = BuildConfig.apiKey
 
+    /**
+     * Gets a pair of coordinates near the Region's largest city.
+     *
+     * @param region The requested region.
+     * @return Pair of coordinates for requested region.
+     */
     private fun latLongPairFrom(region: Region): Pair<String, String> =
         when (region) {
             Region.NO1 -> "59.91" to "10.75"
@@ -55,8 +66,14 @@ object TemperatureRepository {
             Region.NO5 -> "60.39" to "5.32"
         }
 
-    // Hvis disse stasjonene fjernes, funker ikke API-kallene våre
+    /**
+     * Gets a weather sensor near the Region's largest city.
+     *
+     * @param region The requested region.
+     * @return String representing a sensor.
+     */
     private fun sensorFrom(region:Region): String =
+        // Hvis disse stasjonene fjernes, funker ikke API-kallene våre
         when (region) {
             Region.NO1 -> "SN18315"
             Region.NO2 -> "SN39200"
@@ -65,6 +82,12 @@ object TemperatureRepository {
             Region.NO5 -> "SN50539"
         }
 
+    /**
+     * Helper function which turns a calendar into a string
+     *
+     * @param calendar The time to be converted
+     * @return A string representing the calendar time
+     */
     private fun stringDateFrom(calendar: Calendar = Calendar.getInstance()): String {
         val year = "%02d".format(calendar.get(Calendar.YEAR))
         val month = "%02d".format(calendar.get(Calendar.MONTH) + 1)
@@ -73,6 +96,17 @@ object TemperatureRepository {
     }
 
 
+    /**
+     * Grabs historical weather data from FROST
+     *
+     * @param region Chosen region
+     * @param days How many days to grab
+     * @param hourInterval Optional custom hour interval (default: 1)
+     * @param calendar Optional time offset.
+     * @param localHttpClient Optional custom HttpClient (used by unit-tests)
+     *
+     * @return A list of lists of doubles represeintf the temperatures for the chosen range
+     */
     suspend fun getPast (
         region: Region,
         days: Int,
@@ -102,53 +136,15 @@ object TemperatureRepository {
         }
     }
 
-    // FIXME: Dette funker ikke. Dagens værdata er vanskelig å få tak i
-//    suspend fun getToday(
-//        region: Region,
-//        calendar: Calendar = Calendar.getInstance(),
-//        locationForecastClient: HttpClient = this.httpClient,
-//        frostClient: HttpClient = this.frostClient
-//    ): List<Double> {
-//
-//        try {
-//            val (lat, lon) = latLongPairFrom(region)
-//            val interval = 1
-//
-//            val urlPast = frostBase +
-//                    "sources=${sensorFrom(region)}" +
-//                    "&referencetime=${stringDateFrom(calendar)}%2F${stringDateFrom(calendar)}" +
-//                    "&elements=air_temperature" +
-//                    "&timeresolutions=PT${interval}H"
-//            val urlFuture = "$baseUrl?lat=$lat&lon=$lon"
-//
-//            println("asdasd $urlPast")
-//
-//
-//            val list = mutableListOf<Double>()
-//            val first = frostClient.get(urlPast).body<FrostData>()
-//            first.data.forEach { source ->
-//                if (source.referenceTime.split("T")[0] == stringDateFrom(calendar)) {
-//                    println("P: ${source.referenceTime}")
-//                    list.add(source.observations[0].value)
-//                }
-//            }
-//            val second = locationForecastClient.get(urlFuture).body<WeatherData>()
-//            second.properties.timeseries.forEach { timeUnit ->
-//                if (timeUnit.time.split("T")[0] == stringDateFrom(calendar)) {
-//                    println(timeUnit.time)
-//                    list.add(timeUnit.data.instant.details.air_temperature)
-//                }
-//            }
-//
-//            return list
-//        }
-//        catch (e: Exception) {
-//            e.printStackTrace()
-//            return listOf()
-//        }
-//    }
-
-    //TODO: only grab data from next day. (make sure it is separated by one hour)
+    /**
+     * Grabs tomorrow's weather forecast from FROST
+     *
+     * @param region Chosen region
+     * @param calendar Optional time offset.
+     * @param localHttpClient Optional custom HttpClient (used by unit-tests)
+     *
+     * @return A list of doubles representing the expected temperatures of tomorrow
+     */
     suspend fun getTomorrow(
         region: Region,
         calendar: Calendar = Calendar.getInstance(),

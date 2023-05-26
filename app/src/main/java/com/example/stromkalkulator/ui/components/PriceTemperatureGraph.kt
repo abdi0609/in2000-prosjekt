@@ -1,20 +1,15 @@
 package com.example.stromkalkulator.ui.components
 
 import android.graphics.Typeface
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.stromkalkulator.R
@@ -58,6 +53,11 @@ private val legendItemSpacing = 4.dp
 private val legendTopPaddingValue = 8.dp
 private val legendPadding = dimensionsOf(top = legendTopPaddingValue)
 
+/**
+ * A composable that displays a chart with two data series.
+ *
+ * @param viewModel The view model that provides the data for the chart.
+ */
 @Composable
 fun PriceTemperatureGraph(viewModel: HomeViewModel) {
     val state = viewModel.homeStateFlow.collectAsState()
@@ -70,6 +70,7 @@ fun PriceTemperatureGraph(viewModel: HomeViewModel) {
             .padding(25.dp)
             .fillMaxSize()
     ) {
+        // Provide the chart style to the chart.
         ProvideChartStyle(rememberChartStyle(listOf(color1), listOf(color2))) {
             val priceChart = columnChart(
                 mergeMode = ColumnChart.MergeMode.Stack,
@@ -79,6 +80,7 @@ fun PriceTemperatureGraph(viewModel: HomeViewModel) {
                 targetVerticalAxisPosition = AxisPosition.Vertical.End,
 
                 )
+            // Display the chart.
             Chart(
                 chart = remember(priceChart, tempChart) {priceChart + tempChart},
                 chartModelProducer = composedModel,
@@ -110,6 +112,9 @@ fun PriceTemperatureGraph(viewModel: HomeViewModel) {
     }
 }
 
+/**
+ * A composable that displays a legend for the chart.
+ */
 @Composable
 private fun rememberLegend() = verticalLegend(
     items = chartColors.mapIndexed { index, chartColor ->
@@ -130,18 +135,3 @@ private fun rememberLegend() = verticalLegend(
     spacing = legendItemSpacing,
     padding = legendPadding,
 )
-
-@Composable
-@Preview
-fun GraphTestScreen() {
-    Scaffold(Modifier.fillMaxSize()) {
-        Column(
-            Modifier.padding(it),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-
-        ) {
-            //PriceTemperatureGraph(listOf(), listOf())
-        }
-    }
-}

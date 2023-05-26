@@ -18,6 +18,11 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+/**
+ * This ViewModel class acts as a bridge between the HomeScreen and the domain layer.
+ *
+ * @param regionDomain The RegionDomain to use.
+ */
 class HomeViewModel(
     private val regionDomain: RegionDomain
 ) : GenericViewModel() {
@@ -31,6 +36,11 @@ class HomeViewModel(
 
     }
 
+    /**
+     * Sets the region to the given region.
+     *
+     * @param region The region to set.
+     */
     override fun setRegion(region: Region) {
         viewModelScope.launch {
             regionDomain.setRegion(region)
@@ -40,13 +50,16 @@ class HomeViewModel(
         }
     }
 
+    /**
+     * Updates the homeState with the cached prices and temperatures.
+     */
     override fun updateTempsAndPrices() {
-        // TODO: fix plz
         viewModelScope.launch {
+            // TODO: Implement options for how to view the graph (week, month, year).
+            // Currently the week is hardcoded, but the domain layer is already prepared for this.
             val (price,temp) = GraphHelperDomain.getPresentableWeekPair(
                 homeState.value.region
             )
-            println("\n\n$price\n$temp\n\n")
             homeState.update {
                 it.copy(
                     currentPrice = ElectricityPriceDomain.getCurrentHour(homeState.value.region),
@@ -57,6 +70,9 @@ class HomeViewModel(
         }
     }
 
+    /**
+     * Updates the homeState with the current region.
+     */
     private fun updateRegion() {
         viewModelScope.launch {
             regionDomain.getRegion().collect { region ->
@@ -68,6 +84,9 @@ class HomeViewModel(
         }
     }
 
+    /**
+     * Factory for creating a HomeViewModel.
+     */
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
