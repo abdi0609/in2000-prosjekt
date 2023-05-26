@@ -130,7 +130,7 @@ object ElectricityPriceDomain {
         daysBack: Int,
         region: Region,
         calendar: Calendar = Calendar.getInstance(),
-        containsTomorrow: Boolean = true
+        containsTomorrow: Boolean = false
     ): List<List<HourPrice>> {
         Log.v("fetch","Fetchin eprice for $region, $calendar")
 

@@ -1,5 +1,6 @@
 package com.example.stromkalkulator.data.repositories
 
+import android.util.Log
 import com.example.stromkalkulator.data.Region
 import com.example.stromkalkulator.data.models.electricity.HourPrice
 import io.ktor.client.*
@@ -30,6 +31,10 @@ object ElectricityPrice {
         val url = "https://www.hvakosterstrommen.no/api/v1/prices/" +
                 "${year}/${month}-${day}_${region}.json"
 
-        return localClient.get(url).body()
+        Log.i("ElectricityPrice", "Fetching from $url")
+        val response = localClient.get(url)
+        Log.i("ElectricityPrice", "Received response $response")
+
+        return response.body()
     }
 }
