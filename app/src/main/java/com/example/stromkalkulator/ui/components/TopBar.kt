@@ -13,14 +13,11 @@ import com.example.stromkalkulator.viewmodels.GenericViewModel
 @Composable
 fun TopBar(viewModel: GenericViewModel, region: Region) {
     var expanded by remember { mutableStateOf(false) }
+    // Create topbar
     TopAppBar(
-        title = {
-            Text(
-                text = stringResource(
-                    id = region.stringId
-                )
-            )
-        },
+        // Show region
+        title = { Text( text = stringResource( id = region.stringId )) },
+        // Create clickable dropdownmenu
         actions = {
             IconButton(
                 content = {
@@ -29,14 +26,14 @@ fun TopBar(viewModel: GenericViewModel, region: Region) {
                         contentDescription = "edit_location" // TODO: Replace with string resource
                     )
                 },
-                onClick = {
-                    expanded = !expanded
-                },
+                onClick = { expanded = !expanded },
             )
+            // Dropdown for of regions
             DropdownMenu(
                 expanded = expanded,
                 onDismissRequest = { expanded = false }
             ) {
+                // Update temps and prices onClick
                 Region.values().forEach { region ->
                     DropdownMenuItem(
                         text = { Text(text = stringResource(id = region.stringId)) },
@@ -48,6 +45,6 @@ fun TopBar(viewModel: GenericViewModel, region: Region) {
                     )
                 }
             }
-        },
+        }
     )
 }
