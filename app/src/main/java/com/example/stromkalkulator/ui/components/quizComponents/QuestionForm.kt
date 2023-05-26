@@ -1,6 +1,5 @@
 package com.example.stromkalkulator.ui.components.quizComponents
 
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
@@ -16,15 +15,14 @@ import com.example.stromkalkulator.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun QuestionForm(quiz: Quiz, innerPadding: PaddingValues, showForm: MutableState<Boolean>) {
+    // index of current question in quiz.questions
     var currentQuestionIndex by remember { mutableStateOf(0) }
+    // get current question
     val question = quiz.questions[currentQuestionIndex]
 
+    // current selected answer
     var answer by remember{ mutableStateOf("") }
-
-    // progress bar
-    val progressPointsPerQuestion = 1 / quiz.questions.size.toFloat()
-    var progress by remember { mutableStateOf(0f) }
-    var progressBarMoved by remember { mutableStateOf(false) }
+    var alternativeSelected by remember { mutableStateOf(false) }
 
     Box (contentAlignment = Alignment.Center, modifier = Modifier.padding(innerPadding)){
         Column(
@@ -56,6 +54,7 @@ fun QuestionForm(quiz: Quiz, innerPadding: PaddingValues, showForm: MutableState
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     row.forEach { questionValue ->
+                        // different color if this alternative is selected
                         val color =
                             if (answer == questionValue) CardDefaults.cardColors(MaterialTheme.colorScheme.secondary) else CardDefaults.cardColors(
                                 MaterialTheme.colorScheme.primary
@@ -68,11 +67,7 @@ fun QuestionForm(quiz: Quiz, innerPadding: PaddingValues, showForm: MutableState
                             onClick = {
                                 // save answer for this question
                                 answer = questionValue
-                                // increase progress bar if first alternative selected
-                                if (!progressBarMoved) {
-                                    progress += progressPointsPerQuestion
-                                    progressBarMoved = true
-                                }
+                                alternativeSelected = true
                             },
                         ) {
                             Column(
@@ -99,7 +94,7 @@ fun QuestionForm(quiz: Quiz, innerPadding: PaddingValues, showForm: MutableState
             // next button
             TextButton(
                 modifier = Modifier.offset(y = (-30).dp),
-                enabled = progressBarMoved,
+                enabled = alternativeSelected,
                 onClick = {
                     // save answer
                     quiz.answer(currentQuestionIndex, answer)
@@ -114,8 +109,8 @@ fun QuestionForm(quiz: Quiz, innerPadding: PaddingValues, showForm: MutableState
                     }
                     // reset selected answer
                     answer = ""
-                    // progress bar ready for new increase
-                    progressBarMoved = false
+                    // ready for new alternative to be selected
+                    alternativeSelected = false
                 }
             ) {
                 // button says submit if last question, else next

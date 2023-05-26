@@ -15,6 +15,7 @@ import com.example.stromkalkulator.ui.components.quizComponents.TipsColumn
 
 @Composable
 fun DetailedScreen(innerPadding: PaddingValues) {
+    // list of questions for the quiz
     val questions = listOf(
         Question(
             stringResource(R.string.spm1),

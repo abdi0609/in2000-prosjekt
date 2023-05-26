@@ -23,14 +23,15 @@ import com.example.stromkalkulator.ui.theme.*
 @Composable
 fun CurrentPriceBubble(price: Double) {
     val fontSize = 35.sp
-    //val price = priceString.toDoubleOrNull()
     val priceText = "%.2f".format(price)
 
+    // color of text based on price
     val textColor =
         if (price < 1.2) extendedColors().onGreen
         else if (price < 2) extendedColors().onYellow
         else extendedColors().onRed
 
+    // color of bubble based on price
     val backgroundColor =
         if (price < 1.2) extendedColors().green
         else if (price < 2) extendedColors().yellow
@@ -46,6 +47,7 @@ fun CurrentPriceBubble(price: Double) {
                 .background(backgroundColor),
             contentAlignment = Alignment.Center,
         ) {
+            // price bubble text
             Text(buildAnnotatedString {
                 withStyle(style = SpanStyle(color = textColor, fontSize = fontSize,
                     fontWeight = FontWeight.Bold)) {

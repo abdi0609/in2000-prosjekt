@@ -20,7 +20,8 @@ fun HomeScreen(
 ) {
     Scaffold(
         topBar = { TopBar(viewModel, viewModel.homeStateFlow.collectAsState().value.region) },
-        content = { MainView(it, viewModel) }
+        content = { MainView(it, viewModel) },
+        modifier = Modifier.padding(paddingValue)
     )
         
 }
@@ -31,7 +32,7 @@ private fun MainView(
     viewModel: HomeViewModel
 ) {
     val state = viewModel.homeStateFlow.collectAsState()
-    val currentPrice = state.value.currentPrice
+    val currentPrice = state.value.currentPrice // current electricity price
 
     Column (
         modifier = Modifier
@@ -42,10 +43,12 @@ private fun MainView(
         verticalArrangement = Arrangement.spacedBy(30.dp)
     ) {
         Spacer(modifier = Modifier.size(40.dp))
+        // price bubble and info bubble
         Box(contentAlignment = Alignment.TopEnd) {
             CurrentPriceBubble(price = currentPrice)
             InfoBubble()
         }
+        // graph
         PriceTemperatureGraph(viewModel)
         Spacer(modifier = Modifier.height(60.dp)) // FIXME: Space på bunnen her funker ikke
     }
