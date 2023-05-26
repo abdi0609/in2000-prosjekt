@@ -17,18 +17,19 @@ muligheter for energibesparelser. Dette kan potensielt føre til mer bærekrafti
 og reduserte strømutgifter for både enkeltpersoner og bedrifter.
 
 ### API-nøkkel
-For å få hentet data fra MET-apiene trenger man en API-nøkkel.
-Det er god standard å ha denne lokalt på egen maskin, og ikke
+For å få hentet data fra FROST og MET-apiene trenger man API-nøkkler.
+Det er god standard å ha dise lokalt på egen maskin, og ikke
 i en fil som pushes til github. For at appen skal kjøre, legg
-til api-nøkkelen i local.properties slik:
+til api-nøkkelene i local.properties slik:
 
 ```properties
 apiKey=DIN_API_NØKKEL
+frostKey=DIN_FROST_NØKKEL
 ```
 
-Da burde den ligge i BuildConfig når du har bygget appen, 
-og du kan hente den ut hvor som helst
-i kotlin-koden ved å skirve `BuildConfig.apiKey`
+Da burde de ligge i BuildConfig når du har bygget appen, 
+og du kan hente de ut hvor som helst
+i kotlin-koden ved å skirve `BuildConfig.apiKey` eller `BuildConfig.frostKey`
 
 **ADVARSEL: DETTE GJEMMER IKKE API-NØKKELEN I APK-BUILDS AV 
 PROSJEKTET. DETTE ER BARE EN LØSNING FOR Å SLIPPE Å LEGGE TIL NØKKELEN I GIT.**
