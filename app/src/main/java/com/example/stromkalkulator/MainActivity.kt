@@ -1,6 +1,5 @@
 package com.example.stromkalkulator
 
-import android.content.Context
 import android.os.Bundle
 import androidx.compose.material3.Icon
 import androidx.activity.ComponentActivity
@@ -16,9 +15,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -26,7 +22,6 @@ import com.example.stromkalkulator.ui.screens.CalculatorScreen
 import com.example.stromkalkulator.ui.screens.DetailedScreen
 import com.example.stromkalkulator.ui.screens.HomeScreen
 import com.example.stromkalkulator.ui.theme.StromKalkulatorTheme
-import com.example.stromkalkulator.viewmodels.GenericViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -67,7 +62,6 @@ sealed class Screen(val route: String) {
  *
  * @param navController The NavController used to handle navigation between screens.
  */
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainView(navController: NavHostController) {
 

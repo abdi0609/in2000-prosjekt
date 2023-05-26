@@ -72,6 +72,6 @@ internal fun rememberChartStyle(columnChartColors: List<Color>, lineChartColors:
     }
 }
 
-@Composable
+/*@Composable
 internal fun rememberChartStyle(chartColors: List<Color>) =
-    rememberChartStyle(columnChartColors = chartColors, lineChartColors = chartColors)
+    rememberChartStyle(columnChartColors = chartColors, lineChartColors = chartColors)*/

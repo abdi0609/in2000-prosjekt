@@ -1,13 +1,6 @@
 package com.example.stromkalkulator.data
 
-import android.content.Context
-import androidx.datastore.core.DataStore
-import androidx.datastore.dataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
 import com.example.stromkalkulator.R
-import java.util.concurrent.Flow
-
 
 enum class Region(val stringId: Int) {
     NO1(R.string.region_east),

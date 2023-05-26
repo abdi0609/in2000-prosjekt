@@ -35,7 +35,7 @@ fun InfoCard(
     steps: Int,
     stringResource: Int)
 {
-    Box() {
+    Box {
         var expanded by remember { mutableStateOf(false) }
         val rotationState by animateFloatAsState( targetValue = if (expanded) 180f else 0f )
         val sliderPointerFraction = (standard.toFloat()/maks)
@@ -55,7 +55,7 @@ fun InfoCard(
                     Modifier.height(75.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Box() {
+                    Box {
                         Icon(
                             modifier = Modifier
                                 .fillMaxWidth(0.23F)

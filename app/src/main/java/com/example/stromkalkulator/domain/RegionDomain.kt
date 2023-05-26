@@ -8,7 +8,6 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import com.example.stromkalkulator.data.Region
 import kotlinx.coroutines.flow.*
 
-// TODO: Move to Region enum as companion object?
 class RegionDomain(
     private val dataStore: DataStore<Preferences>
 ) {

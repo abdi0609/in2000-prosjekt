@@ -6,13 +6,13 @@ import com.patrykandpatrick.vico.core.entry.FloatEntry
 
 object GraphHelperDomain {
 
-    suspend fun getPresentableTomorrowPair(
+    /*suspend fun getPresentableTomorrowPair(
         region: Region
     ): Pair<List<ChartEntry>, List<ChartEntry>> {
         val prices = ElectricityPriceDomain.getTomorrow(region)
         val temps = TemperatureDomain.getTomorrow(region)
         return listsToChartListPair(prices, temps)
-    }
+    }*/
 
     suspend fun getPresentableWeekPair(
         region: Region
@@ -22,13 +22,13 @@ object GraphHelperDomain {
         return listsToChartListPair(prices, temps)
     }
 
-    suspend fun getPresentableMonthPair(
+    /*suspend fun getPresentableMonthPair(
         region: Region
     ): Pair<List<ChartEntry>, List<ChartEntry>> {
         val prices = ElectricityPriceDomain.getMonthAverages(region)
         val temps = TemperatureDomain.getMonth(region)
         return listsToChartListPair(prices, temps)
-    }
+    }*/
 
     private fun listsToChartListPair(
         prices: List<Double>,

@@ -46,13 +46,9 @@ import com.patrykandpatrick.vico.core.entry.composed.plus
 
 private const val COLOR_1_CODE = 0xffb983ff
 private const val COLOR_2_CODE = 0xff91b1fd
-private const val COLOR_3_CODE = 0xff8fdaff
-private const val COLOR_4_CODE = 0xfffab94d
 
 private val color1 = Color(COLOR_1_CODE)
 private val color2 = Color(COLOR_2_CODE)
-private val color3 = Color(COLOR_3_CODE)
-private val color4 = Color(COLOR_4_CODE)
 private val chartColors = listOf(color1, color2)
 
 private val legendItemLabelTextSize = 12.sp

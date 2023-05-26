@@ -20,7 +20,7 @@ class CalculatorViewModel(
     private val regionDomain: RegionDomain
 ) : GenericViewModel() {
 
-    private var calculatorState = MutableStateFlow<CalculatorUiState>(CalculatorUiState())
+    private var calculatorState = MutableStateFlow(CalculatorUiState())
     val calculatorStateFlow: StateFlow<CalculatorUiState> = calculatorState.asStateFlow()
 
     init {

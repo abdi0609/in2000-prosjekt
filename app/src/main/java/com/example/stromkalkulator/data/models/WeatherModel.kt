@@ -2,10 +2,10 @@ package com.example.stromkalkulator.data.models
 
 import kotlinx.serialization.Serializable
 
-data class Temperature(
+/*data class Temperature(
     val time: String,
     val value: Double,
-)
+)*/
 
 @Serializable
 data class WeatherData(
