@@ -28,6 +28,7 @@ class HomeViewModel(
     init {
         updateRegion()
         updateTempsAndPrices()
+
     }
 
     override fun setRegion(region: Region) {
@@ -42,7 +43,7 @@ class HomeViewModel(
     override fun updateTempsAndPrices() {
         // TODO: fix plz
         viewModelScope.launch {
-            val (price,temp) = GraphHelperDomain.getPresentableTomorrowPair(
+            val (price,temp) = GraphHelperDomain.getPresentableWeekPair(
                 homeState.value.region
             )
             println("\n\n$price\n$temp\n\n")
