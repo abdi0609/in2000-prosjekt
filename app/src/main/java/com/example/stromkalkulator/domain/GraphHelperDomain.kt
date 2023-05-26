@@ -15,6 +15,7 @@ object GraphHelperDomain {
      *
      * @param region The region to fetch data for.
      */
+    @Suppress("unused")
     suspend fun getPresentableTomorrowPair(
         region: Region
     ): Pair<List<ChartEntry>, List<ChartEntry>> {
@@ -41,6 +42,7 @@ object GraphHelperDomain {
      *
      * @param region The region to fetch data for.
      */
+    @Suppress("unused")
     suspend fun getPresentableMonthPair(
         region: Region
     ): Pair<List<ChartEntry>, List<ChartEntry>> {
