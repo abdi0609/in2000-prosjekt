@@ -1,6 +1,5 @@
 package com.example.stromkalkulator.domain
 
-import android.util.Log
 import com.example.stromkalkulator.data.Region
 import com.example.stromkalkulator.data.models.electricity.HourPrice
 import com.example.stromkalkulator.data.repositories.ElectricityPrice
@@ -205,11 +204,9 @@ object ElectricityPriceDomain {
         containsTomorrow: Boolean = false,
         calendar: Calendar = Calendar.getInstance(),
     ): List<List<HourPrice>> {
-//        Log.v("fetch","Fetchin eprice for $region, $calendar")
 
         val daysForward = if (containsTomorrow) daysBack+1 else daysBack
         calendar.add(Calendar.DAY_OF_MONTH,-daysBack)
-        // TODO: Fixme
         lastUpdatedMap[region] = calendar.time
 
         return try {
